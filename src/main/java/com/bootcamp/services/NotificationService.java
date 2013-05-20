@@ -20,24 +20,24 @@ import java.util.List;
 /**
  * Created by Bignon on 11/27/17.
  */
-
 @Component
-public class NotificationService implements DatabaseConstants{
-    
-    @Value("${event_dictionnary_path}")
+public class NotificationService implements DatabaseConstants {
+
+    //@Value("${media.location}")
+    @Value("${event.dictionnary.path}")
     String eventDictionnary;
 
     public Notification create(Notification notification) throws SQLException {
-         notification.setDateCreation(System.currentTimeMillis());
-         notification.setDateMiseAJour(System.currentTimeMillis());
-         NotificationCRUD.create(notification);
-         return notification;
+        notification.setDateCreation(System.currentTimeMillis());
+        notification.setDateMiseAJour(System.currentTimeMillis());
+        NotificationCRUD.create(notification);
+        return notification;
     }
 
     public Notification update(Notification notification) throws SQLException {
         notification.setDateMiseAJour(System.currentTimeMillis());
         NotificationCRUD.update(notification);
-        
+
         return notification;
     }
 
@@ -55,19 +55,19 @@ public class NotificationService implements DatabaseConstants{
 
         return notifications.get(0);
     }
-    
+
     public List<Notification> read() throws SQLException {
         List<Notification> notifications = NotificationCRUD.read();
         return notifications;
     }
-    
-    public boolean checkEventAndgenerateNotification(NotificationInput input) throws FileNotFoundException, SQLException{
+
+    public boolean checkEventAndgenerateNotification(NotificationInput input) throws FileNotFoundException, SQLException {
         Gson gson = new Gson();
-        
-         BufferedReader bufferedReader = new BufferedReader(new FileReader(eventDictionnary));
+
+        BufferedReader bufferedReader = new BufferedReader(new FileReader("D:/Epub/event_dictionnary.json"));
         //convert the json string back to object
         List<NotificationGn> notificationgns = gson.fromJson(bufferedReader, List.class);
-        
+
         for (NotificationGn notificationgn : notificationgns) {
             if (notificationgn.getAction().equalsIgnoreCase(input.getAction()) && notificationgn.isGen_event()) {
                 Notification notification = new Notification();
@@ -75,71 +75,71 @@ public class NotificationService implements DatabaseConstants{
                 notification.setAction(notificationgn.getAction());
                 notification.setEntityId(input.getEntityId());
                 notification.setEntityType(input.getEntityType());
-                
-                notification.setContenuGsm(getSmsMessage(input,notificationgn.getDiffusions().get(0).getMessage()));
-                notification.setContenuMail(getMailMessage(input,notificationgn.getDiffusions().get(1).getMessage()));
-                notification.setContenuMobileApp(getMobileMessage(input,notificationgn.getDiffusions().get(3).getMessage()));
-                notification.setContenuWebApp(getWebMessage(input,notificationgn.getDiffusions().get(2).getMessage()));
+
+                notification.setContenuGsm(getSmsMessage(input, notificationgn.getDiffusions().get(0).getMessage()));
+                notification.setContenuMail(getMailMessage(input, notificationgn.getDiffusions().get(1).getMessage()));
+                notification.setContenuMobileApp(getMobileMessage(input, notificationgn.getDiffusions().get(3).getMessage()));
+                notification.setContenuWebApp(getWebMessage(input, notificationgn.getDiffusions().get(2).getMessage()));
                 this.create(notification);
-                return true;              
+                return true;
             }
         }
         return false;
     }
-    
+
     public String getSmsMessage(NotificationInput input, String baseMsg) throws SQLException {
         String action = input.getAction().split("_")[0];
         String message = "";
         if (action.equals("new") || action.equals("close")) {
-         message = baseMsg+input.getTitre();
+            message = baseMsg + input.getTitre();
         }
-        
+
         if (action.equals("update")) {
-        message = baseMsg + input.getTitre()+" de "+input.getLastVersion()+" a "+input.getCurrentVersion();
-         }
-        
+            message = baseMsg + input.getTitre() + " de " + input.getLastVersion() + " a " + input.getCurrentVersion();
+        }
+
         return message;
     }
-    
+
     public String getMailMessage(NotificationInput input, String baseMsg) throws SQLException {
         String message = "";
         String action = input.getAction().split("_")[0];
         if (action.equals("new") || action.equals("close")) {
-         message = baseMsg+input.getTitre();
+            message = baseMsg + input.getTitre();
         }
-        
+
         if (action.equals("update")) {
-        message =baseMsg+input.getTitre()+"\n Ancienne Valeur de "+input.getAttributName()+": "+input.getLastVersion()
-                                           +"\n Nouvelle Valeur de "+input.getAttributName()+": "+input.getCurrentVersion();
+            message = baseMsg + input.getTitre() + "\n Ancienne Valeur de " + input.getAttributName() + ": " + input.getLastVersion()
+                    + "\n Nouvelle Valeur de " + input.getAttributName() + ": " + input.getCurrentVersion();
         }
         return message;
     }
-    
+
     public String getWebMessage(NotificationInput input, String baseMsg) throws SQLException {
         String message = "";
         String action = input.getAction().split("_")[0];
         if (action.equals("new") || action.equals("close")) {
-         message = baseMsg+input.getTitre();
+            message = baseMsg + input.getTitre();
         }
-        
+
         if (action.equals("update")) {
-        message =baseMsg+input.getTitre()+"\n Ancienne Valeur de "+input.getAttributName()+": "+input.getLastVersion()
-                                           +"\n Nouvelle Valeur de "+input.getAttributName()+": "+input.getCurrentVersion();
+            message = baseMsg + input.getTitre() + "\n Ancienne Valeur de " + input.getAttributName() + ": " + input.getLastVersion()
+                    + "\n Nouvelle Valeur de " + input.getAttributName() + ": " + input.getCurrentVersion();
         }
         return message;
     }
-    
+
     public String getMobileMessage(NotificationInput input, String baseMsg) throws SQLException {
         String action = input.getAction().split("_")[0];
         String message = "";
         if (action.equals("new") || action.equals("close")) {
-         message = baseMsg+input.getTitre();
+            message = baseMsg + input.getTitre();
         }
-        
+
         if (action.equals("update")) {
-        message = baseMsg + input.getTitre()+" de "+input.getLastVersion()+" a "+input.getCurrentVersion();
-         }
-        
+            message = baseMsg + input.getTitre() + " de " + input.getLastVersion() + " a " + input.getCurrentVersion();
+        }
+
         return message;
     }
 }
