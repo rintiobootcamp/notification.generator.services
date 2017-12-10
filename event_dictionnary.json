@@ -185,16 +185,16 @@
     },
     {
         "libelle": "Cloture de sondage",
-        "action": "close_sondgae",
+        "action": "close_sondage",
         "gen_event": true,
         "diffusion": [
             {
                 "canal": "SMS",
-                "message": "Il y a eu plus de 100 likes sur le débat "
+                "message": "Un sondage a été cloturé. Il s'agit du sondage ayant pour titre "
             },
             {
                 "canal": "MAIL",
-                "message": "Il y a eu plus de 100 likes sur le débat "
+                "message": "Un sondage a été cloturé. Il s'agit du sondage ayant pour titre "
             },
             {
                 "canal": "WEB_APP",
