@@ -1,0 +1,5 @@
+FROM Bignon Febron <bignonfebron@gmail.com> 
+VOLUME /tmp 
+ARG WAR_FILE ADD ${JAR_FILE} boot.security.Services.jar 
+ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-war","/boot.security.Services.jar"]
+	 

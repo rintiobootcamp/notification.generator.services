@@ -1,0 +1,515 @@
+[
+	{
+	"libelle":"creation de projet",
+	"action":"new_project",
+	"gen_event":"yes",
+	"diffusion":[
+		{
+			"canal":"gsm",
+			"message":"azerty"
+		},
+		{
+			"canal":"mobile App",
+			"message":"qsdfghjk"
+		},
+			{
+			"canal":"mail",
+			"message":"qsdfghjk"
+		}
+	]
+},
+{
+	"libelle":"modification de projet",
+	"action":"update_project",
+	"gen_event":"yes",
+	"diffusion":[
+		{
+			"canal":"gsm",
+			"message":"azerty"
+		},
+		{
+			"canal":"mobile App",
+			"message":"qsdfghjk"
+		},
+			{
+			"canal":"mail",
+			"message":"qsdfghjk"
+		}
+		]
+},
+	{
+	"libelle":"suppression de projet",
+	"action":"delete_project",
+	"gen_event":"yes",
+	"diffusion":[
+		{
+			"canal":"gsm",
+			"message":"azerty"
+		},
+		{
+			"canal":"mobile App",
+			"message":"qsdfghjk"
+		},
+			{
+			"canal":"mail",
+			"message":"qsdfghjk"
+		}
+	]
+},
+{
+	"libelle":"creation de debat",
+	"action":"new_debat",
+	"gen_event":"yes",
+	"diffusion":[
+		{
+			"canal":"gsm",
+			"message":"azerty"
+		},
+		{
+			"canal":"mobile App",
+			"message":"qsdfghjk"
+		},
+			{
+			"canal":"mail",
+			"message":"qsdfghjk"
+		}
+	]
+},
+{
+	"libelle":"modification de debat",
+	"action":"update_debat",
+	"gen_event":"yes",
+	"diffusion":[
+		{
+			"canal":"gsm",
+			"message":"azerty"
+		},
+		{
+			"canal":"mobile App",
+			"message":"qsdfghjk"
+		},
+			{
+			"canal":"mail",
+			"message":"qsdfghjk"
+		}
+		]
+},
+{
+	"libelle":"suppression de debat",
+	"action":"delete_debat",
+	"gen_event":"yes",
+	"diffusion":[
+		{
+			"canal":"gsm",
+			"message":"azerty"
+		},
+		{
+			"canal":"mobile App",
+			"message":"qsdfghjk"
+		},
+			{
+			"canal":"mail",
+			"message":"qsdfghjk"
+		}
+	]
+},
+{
+	"libelle":"creation de sondage",
+	"action":"new_sondage",
+	"gen_event":"yes",
+	"diffusion":[
+		{
+			"canal":"gsm",
+			"message":"azerty"
+		},
+		{
+			"canal":"mobile App",
+			"message":"qsdfghjk"
+		},
+			{
+			"canal":"mail",
+			"message":"qsdfghjk"
+		}
+	]
+},
+{
+	"libelle":"modification de sondage",
+	"action":"update_sondage",
+	"gen_event":"yes",
+	"diffusion":[
+		{
+			"canal":"gsm",
+			"message":"azerty"
+		},
+		{
+			"canal":"mobile App",
+			"message":"qsdfghjk"
+		},
+			{
+			"canal":"mail",
+			"message":"qsdfghjk"
+		}
+		]
+},
+{
+	"libelle":"suppression de sondage",
+	"action":"delete_sondage",
+	"gen_event":"yes",
+	"diffusion":[
+		{
+			"canal":"gsm",
+			"message":"azerty"
+		},
+		{
+			"canal":"mobile App",
+			"message":"qsdfghjk"
+		},
+			{
+			"canal":"mail",
+			"message":"qsdfghjk"
+		}
+	]
+},
+{
+	"libelle":"creation de like",
+	"action":"new_like",
+	"gen_event":"yes",
+	"diffusion":[
+		{
+			"canal":"gsm",
+			"message":"azerty"
+		},
+		{
+			"canal":"mobile App",
+			"message":"qsdfghjk"
+		},
+			{
+			"canal":"mail",
+			"message":"qsdfghjk"
+		}
+	]
+},
+{
+	"libelle":"modification de like",
+	"action":"update_like",
+	"gen_event":"yes",
+	"diffusion":[
+		{
+			"canal":"gsm",
+			"message":"azerty"
+		},
+		{
+			"canal":"mobile App",
+			"message":"qsdfghjk"
+		},
+			{
+			"canal":"mail",
+			"message":"qsdfghjk"
+		}
+		]
+},
+{
+	"libelle":"suppression de like",
+	"action":"delete_like",
+	"gen_event":"yes",
+	"diffusion":[
+		{
+			"canal":"gsm",
+			"message":"azerty"
+		},
+		{
+			"canal":"mobile App",
+			"message":"qsdfghjk"
+		},
+			{
+			"canal":"mail",
+			"message":"qsdfghjk"
+		}
+	]
+},
+{
+	"libelle":"creation de commentaire",
+	"action":"new_commentaire",
+	"gen_event":"yes",
+	"diffusion":[
+		{
+			"canal":"gsm",
+			"message":"azerty"
+		},
+		{
+			"canal":"mobile App",
+			"message":"qsdfghjk"
+		},
+			{
+			"canal":"mail",
+			"message":"qsdfghjk"
+		}
+	]
+},
+{
+	"libelle":"modification de commentaire",
+	"action":"update_commentaire",
+	"gen_event":"yes",
+	"diffusion":[
+		{
+			"canal":"gsm",
+			"message":"azerty"
+		},
+		{
+			"canal":"mobile App",
+			"message":"qsdfghjk"
+		},
+			{
+			"canal":"mail",
+			"message":"qsdfghjk"
+		}
+		]
+},
+{
+	"libelle":"suppression de commentaire",
+	"action":"delete_commentaire",
+	"gen_event":"yes",
+	"diffusion":[
+		{
+			"canal":"gsm",
+			"message":"azerty"
+		},
+		{
+			"canal":"mobile App",
+			"message":"qsdfghjk"
+		},
+			{
+			"canal":"mail",
+			"message":"qsdfghjk"
+		}
+	]
+},
+{
+	"libelle":"creation de censure",
+	"action":"new_censure",
+	"gen_event":"yes",
+	"diffusion":[
+		{
+			"canal":"gsm",
+			"message":"azerty"
+		},
+		{
+			"canal":"mobile App",
+			"message":"qsdfghjk"
+		},
+			{
+			"canal":"mail",
+			"message":"qsdfghjk"
+		}
+	]
+},
+{
+	"libelle":"modification de censure",
+	"action":"update_censure",
+	"gen_event":"yes",
+	"diffusion":[
+		{
+			"canal":"gsm",
+			"message":"azerty"
+		},
+		{
+			"canal":"mobile App",
+			"message":"qsdfghjk"
+		},
+			{
+			"canal":"mail",
+			"message":"qsdfghjk"
+		}
+		]
+},
+{
+	"libelle":"suppression de censure",
+	"action":"delete_censure",
+	"gen_event":"yes",
+	"diffusion":[
+		{
+			"canal":"gsm",
+			"message":"azerty"
+		},
+		{
+			"canal":"mobile App",
+			"message":"qsdfghjk"
+		},
+			{
+			"canal":"mail",
+			"message":"qsdfghjk"
+		}
+	]
+},
+{
+	"libelle":"creation de pilier",
+	"action":"new_pilier",
+	"gen_event":"yes",
+	"diffusion":[
+		{
+			"canal":"gsm",
+			"message":"azerty"
+		},
+		{
+			"canal":"mobile App",
+			"message":"qsdfghjk"
+		},
+			{
+			"canal":"mail",
+			"message":"qsdfghjk"
+		}
+	]
+},
+{
+	"libelle":"modification de pilier",
+	"action":"update_pilier",
+	"gen_event":"yes",
+	"diffusion":[
+		{
+			"canal":"gsm",
+			"message":"azerty"
+		},
+		{
+			"canal":"mobile App",
+			"message":"qsdfghjk"
+		},
+			{
+			"canal":"mail",
+			"message":"qsdfghjk"
+		}
+		]
+},
+	{
+	"libelle":"suppression de pilier",
+	"action":"delete_project",
+	"gen_event":"yes",
+	"diffusion":[
+		{
+			"canal":"gsm",
+			"message":"azerty"
+		},
+		{
+			"canal":"mobile App",
+			"message":"qsdfghjk"
+		},
+			{
+			"canal":"mail",
+			"message":"qsdfghjk"
+		}
+	]
+},
+{
+	"libelle":"creation de axe",
+	"action":"new_axe",
+	"gen_event":"yes",
+	"diffusion":[
+		{
+			"canal":"gsm",
+			"message":"azerty"
+		},
+		{
+			"canal":"mobile App",
+			"message":"qsdfghjk"
+		},
+			{
+			"canal":"mail",
+			"message":"qsdfghjk"
+		}
+	]
+},
+{
+	"libelle":"modification de axe",
+	"action":"update_axe",
+	"gen_event":"yes",
+	"diffusion":[
+		{
+			"canal":"gsm",
+			"message":"azerty"
+		},
+		{
+			"canal":"mobile App",
+			"message":"qsdfghjk"
+		},
+			{
+			"canal":"mail",
+			"message":"qsdfghjk"
+		}
+		]
+},
+	{
+	"libelle":"suppression de axe",
+	"action":"delete_axe",
+	"gen_event":"yes",
+	"diffusion":[
+		{
+			"canal":"gsm",
+			"message":"azerty"
+		},
+		{
+			"canal":"mobile App",
+			"message":"qsdfghjk"
+		},
+			{
+			"canal":"mail",
+			"message":"qsdfghjk"
+		}
+	]
+},
+{
+	"libelle":"creation de secteur",
+	"action":"new_secteur",
+	"gen_event":"yes",
+	"diffusion":[
+		{
+			"canal":"gsm",
+			"message":"azerty"
+		},
+		{
+			"canal":"mobile App",
+			"message":"qsdfghjk"
+		},
+			{
+			"canal":"mail",
+			"message":"qsdfghjk"
+		}
+	]
+},
+{
+	"libelle":"modification de secteur",
+	"action":"update_secteur",
+	"gen_event":"yes",
+	"diffusion":[
+		{
+			"canal":"gsm",
+			"message":"azerty"
+		},
+		{
+			"canal":"mobile App",
+			"message":"qsdfghjk"
+		},
+			{
+			"canal":"mail",
+			"message":"qsdfghjk"
+		}
+		]
+},
+	{
+	"libelle":"suppression de secteur",
+	"action":"delete_secteur",
+	"gen_event":"yes",
+	"diffusion":[
+		{
+			"canal":"gsm",
+			"message":"azerty"
+		},
+		{
+			"canal":"mobile App",
+			"message":"qsdfghjk"
+		},
+			{
+			"canal":"mail",
+			"message":"qsdfghjk"
+		}
+	]
+}
+]
