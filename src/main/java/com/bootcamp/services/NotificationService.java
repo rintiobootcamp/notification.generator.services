@@ -2,11 +2,8 @@ package com.bootcamp.services;
 
 import com.bootcamp.Classes.NotificationGn;
 import com.bootcamp.commons.constants.DatabaseConstants;
-import com.bootcamp.commons.exceptions.DatabaseException;
 import com.bootcamp.commons.models.Criteria;
 import com.bootcamp.commons.models.Criterias;
-import com.bootcamp.commons.ws.utils.RequestParser;
-import com.bootcamp.crud.NotificationCRUD;
 import com.bootcamp.entities.Notification;
 import com.google.gson.Gson;
 import java.io.BufferedReader;
@@ -14,8 +11,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import org.springframework.stereotype.Component;
 import org.springframework.beans.factory.annotation.Value;
-import javax.servlet.http.HttpServletRequest;
-import java.lang.reflect.InvocationTargetException;
+
 import java.sql.SQLException;
 import java.util.List;
 
@@ -32,8 +28,7 @@ public class NotificationService implements DatabaseConstants{
     public Notification create(Notification notification) throws SQLException {
          notification.setDateCreation(System.currentTimeMillis());
          notification.setDateMiseAJour(System.currentTimeMillis());
-         NotificationCRUD.create(notification);
-         
+         NotificationCRUD
          return notification;
     }
 
