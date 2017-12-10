@@ -29,13 +29,13 @@ public class NotificationController {
     @Autowired
     HttpServletRequest request;
 
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST, value="/{enti}")
     @ApiVersions({"1.0"})
     @ApiOperation(value = "Create a new notification", notes = "Create a new notification")
-    public ResponseEntity<Notification> create(@RequestBody @Valid Notification notification) {
+    public ResponseEntity<Boolean> checkEventAndgenerateNotification(@RequestBody @Valid Object object) {
 
         HttpStatus httpStatus = null;
-
+        
         try {
             notificationService.create(notification);
             httpStatus = HttpStatus.OK;
