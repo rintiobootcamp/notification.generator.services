@@ -8,9 +8,12 @@ import com.bootcamp.commons.models.Criterias;
 import com.bootcamp.crud.NotificationCRUD;
 import com.bootcamp.entities.Notification;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
+import java.lang.reflect.Type;
 import org.springframework.stereotype.Component;
 import org.springframework.beans.factory.annotation.Value;
 
@@ -26,6 +29,11 @@ public class NotificationService implements DatabaseConstants {
     //@Value("${media.location}")
     @Value("${event.dictionnary.path}")
     String eventDictionnary;
+
+    public String readFromFile() throws SQLException, FileNotFoundException, IOException {
+        BufferedReader bufferedReader = new BufferedReader(new FileReader("D:/Epub/eventDictionnary.json"));
+        return bufferedReader.toString();
+    }
 
     public Notification create(Notification notification) throws SQLException {
         notification.setDateCreation(System.currentTimeMillis());
@@ -61,12 +69,12 @@ public class NotificationService implements DatabaseConstants {
         return notifications;
     }
 
-    public boolean checkEventAndgenerateNotification(NotificationInput input) throws FileNotFoundException, SQLException {
+    public boolean checkEventAndgenerateNotification(NotificationInput input) throws FileNotFoundException, SQLException, IOException {
+        String chaine = readFileToString();
         Gson gson = new Gson();
-
-        BufferedReader bufferedReader = new BufferedReader(new FileReader("D:/Epub/event_dictionnary.json"));
-        //convert the json string back to object
-        List<NotificationGn> notificationgns = gson.fromJson(bufferedReader, List.class);
+        Type type = new TypeToken<List<NotificationGn>>() {
+        }.getType();
+        List<NotificationGn> notificationgns = gson.fromJson(chaine, type);
 
         for (NotificationGn notificationgn : notificationgns) {
             if (notificationgn.getAction().equalsIgnoreCase(input.getAction()) && notificationgn.isGen_event()) {
@@ -141,5 +149,24 @@ public class NotificationService implements DatabaseConstants {
         }
 
         return message;
+    }
+
+    public static String readFileToString() throws IOException {
+        String filePath = "D:/Epub/eventDictionnary.json";
+        StringBuilder fileData = new StringBuilder(1000);//Constructs a string buffer with no characters in it and the specified initial capacity
+        BufferedReader reader = new BufferedReader(new FileReader(filePath));
+
+        char[] buf = new char[1024];
+        int numRead = 0;
+        while ((numRead = reader.read(buf)) != -1) {
+            String readData = String.valueOf(buf, 0, numRead);
+            fileData.append(readData);
+            buf = new char[1024];
+        }
+
+        reader.close();
+
+        String returnStr = fileData.toString();
+        return returnStr;
     }
 }

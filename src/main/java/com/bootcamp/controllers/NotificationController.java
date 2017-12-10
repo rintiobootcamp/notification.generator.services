@@ -7,6 +7,7 @@ import com.bootcamp.version.ApiVersions;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,7 +33,7 @@ public class NotificationController {
     @RequestMapping(method = RequestMethod.POST)
     @ApiVersions({"1.0"})
     @ApiOperation(value = "Create a new notification", notes = "Create a new notification")
-    public ResponseEntity<Boolean> checkEventAndgenerateNotification(NotificationInput input) throws FileNotFoundException {
+    public ResponseEntity<Boolean> checkEventAndgenerateNotification(NotificationInput input) throws FileNotFoundException, IOException, IOException {
         boolean result = false;
         HttpStatus httpStatus = null;
         
