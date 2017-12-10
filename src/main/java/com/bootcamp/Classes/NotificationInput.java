@@ -11,6 +11,7 @@ package com.bootcamp.Classes;
  */
 public class NotificationInput {
     private String titre;
+    private int entityId;
     private String entityType;
     private String action;
     private String attributName;
@@ -19,6 +20,14 @@ public class NotificationInput {
 
     public String getTitre() {
         return titre;
+    }
+
+    public int getEntityId() {
+        return entityId;
+    }
+
+    public void setEntityId(int entityId) {
+        this.entityId = entityId;
     }
 
     public void setTitre(String titre) {

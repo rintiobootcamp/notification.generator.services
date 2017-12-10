@@ -1,13 +1,12 @@
 package com.bootcamp.controllers;
 
 import com.bootcamp.Classes.NotificationInput;
-import com.bootcamp.commons.exceptions.DatabaseException;
 import com.bootcamp.entities.Notification;
-import com.bootcamp.security.JwtAuthentification;
 import com.bootcamp.services.NotificationService;
 import com.bootcamp.version.ApiVersions;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import java.io.FileNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,8 +14,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -33,37 +32,20 @@ public class NotificationController {
     @RequestMapping(method = RequestMethod.POST)
     @ApiVersions({"1.0"})
     @ApiOperation(value = "Create a new notification", notes = "Create a new notification")
-    public ResponseEntity<Boolean> checkEventAndgenerateNotification(@RequestParam("object") NotificationInput input) {
-
+    public ResponseEntity<Boolean> checkEventAndgenerateNotification(NotificationInput input) throws FileNotFoundException {
+        boolean result = false;
         HttpStatus httpStatus = null;
         
         try {
-            notificationService.checkEventAndgenerateNotification(input);
+            result = notificationService.checkEventAndgenerateNotification(input);
             httpStatus = HttpStatus.OK;
         }catch (SQLException exception){
             httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
         }
 
-        return new ResponseEntity<>(notification, httpStatus);
+        return new ResponseEntity<>(result, httpStatus);
     }
     
-    @RequestMapping(method = RequestMethod.POST)
-    @ApiVersions({"1.0"})
-    @ApiOperation(value = "login", notes = "login")
-    public String authentification(@RequestBody @Valid Notification notification) throws SQLException {
-
-        HttpStatus httpStatus = null;
-        String token = "";
-        
-        if(notificationService.getByLoginAndPwd(notification.getId(), notification.getLogin())){
-            token = JwtAuthentification.addAuthentication(notification);
-            httpStatus = HttpStatus.OK;        
-        }
-
-        return token;
-    }
-        //  THOSES METHODES ARE USELESS FOR THE MOMENT BY THEY WORK 
-/*
     @RequestMapping(method = RequestMethod.PUT, value = "/")
     @ApiVersions({"1.0"})
     @ApiOperation(value = "Update a new notification", notes = "Update a new notification")
@@ -99,7 +81,6 @@ public class NotificationController {
 
     }
 
-
     @RequestMapping(method = RequestMethod.GET, value = "/{id}")
     @ApiVersions({"1.0"})
     @ApiOperation(value = "Read a notification", notes = "Read a notification")
@@ -121,21 +102,19 @@ public class NotificationController {
     @RequestMapping(method = RequestMethod.GET, value = "/")
     @ApiVersions({"1.0"})
     @ApiOperation(value = "Read a notification", notes = "Read a notification")
-    public ResponseEntity<Notification> read() {
+    public ResponseEntity<List<Notification>> read() {
 
-        Notification notification = new Notification();
+        List<Notification> notifications = new ArrayList<Notification>();
         HttpStatus httpStatus = null;
 
         try {
-            List<Notification> notifications = notificationService.read(request);
+            notifications = notificationService.read();
             httpStatus = HttpStatus.OK;
-        }catch (SQLException | IllegalAccessException | DatabaseException | InvocationTargetException exception){
-            
+        }catch (SQLException e){           
             httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
         }
 
-        return new ResponseEntity<Notification>(notification, httpStatus);
+        return new ResponseEntity<List<Notification>>(notifications, httpStatus);
     }
 
-   */
 }

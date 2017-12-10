@@ -29,7 +29,7 @@ public class NotificationService implements DatabaseConstants{
     public Notification create(Notification notification) throws SQLException {
          notification.setDateCreation(System.currentTimeMillis());
          notification.setDateMiseAJour(System.currentTimeMillis());
-         NotificationCRUD
+         NotificationCRUD.create(notification);
          return notification;
     }
 
@@ -55,7 +55,13 @@ public class NotificationService implements DatabaseConstants{
         return notifications.get(0);
     }
     
-    public boolean checkEventAndgenerateNotification(String action, int entityId, String entityType) throws FileNotFoundException, SQLException{
+    public List<Notification> read() throws SQLException {
+        List<Notification> notifications = NotificationCRUD.read();
+
+        return notifications.get(0);
+    }
+    
+    public boolean checkEventAndgenerateNotification(NotificationInput input) throws FileNotFoundException, SQLException{
         Gson gson = new Gson();
         
          BufferedReader bufferedReader = new BufferedReader(new FileReader(eventDictionnary));
@@ -63,16 +69,17 @@ public class NotificationService implements DatabaseConstants{
         List<NotificationGn> notificationgns = gson.fromJson(bufferedReader, List.class);
         
         for (NotificationGn notificationgn : notificationgns) {
-            if (notificationgn.getAction().equalsIgnoreCase(action) && notificationgn.isGen_event()) {
+            if (notificationgn.getAction().equalsIgnoreCase(input.getAction()) && notificationgn.isGen_event()) {
                 Notification notification = new Notification();
                 notification.setLibelle(notificationgn.getLibelle());
                 notification.setAction(notificationgn.getAction());
-                notification.setEntityId(entityId);
-                notification.setEntityType(entityType);
-                notification.setContenuGsm(notificationgn.getDiffusions().get(0).getMessage());
-                notification.setContenuMail(notificationgn.getDiffusions().get(1).getMessage());
-                notification.setContenuMobileApp(notificationgn.getDiffusions().get(3).getMessage());
-                notification.setContenuWebApp(notificationgn.getDiffusions().get(2).getMessage());
+                notification.setEntityId(input.getEntityId());
+                notification.setEntityType(input.getEntityType());
+                
+                notification.setContenuGsm(getSmsMessage(input,notificationgn.getDiffusions().get(0).getMessage()));
+                notification.setContenuMail(getMailMessage(input,notificationgn.getDiffusions().get(1).getMessage()));
+                notification.setContenuMobileApp(getMobileMessage(input,notificationgn.getDiffusions().get(3).getMessage()));
+                notification.setContenuWebApp(getWebMessage(input,notificationgn.getDiffusions().get(2).getMessage()));
                 this.create(notification);
                 return true;              
             }
@@ -80,23 +87,59 @@ public class NotificationService implements DatabaseConstants{
         return false;
     }
     
-    public String getSmsMessage(NotificationInput input, String libelle) throws SQLException {
+    public String getSmsMessage(NotificationInput input, String baseMsg) throws SQLException {
+        String action = input.getAction().split("_")[0];
         String message = "";
+        if (action.equals("new") || action.equals("close")) {
+         message = baseMsg+input.getTitre();
+        }
+        
+        if (action.equals("update")) {
+        message = baseMsg + input.getTitre()+" de "+input.getLastVersion()+" a "+input.getCurrentVersion();
+         }
+        
         return message;
     }
     
-    public String getMailMessage(NotificationInput input, String libelle) throws SQLException {
+    public String getMailMessage(NotificationInput input, String baseMsg) throws SQLException {
         String message = "";
+        String action = input.getAction().split("_")[0];
+        if (action.equals("new") || action.equals("close")) {
+         message = baseMsg+input.getTitre();
+        }
+        
+        if (action.equals("update")) {
+        message =baseMsg+input.getTitre()+"\n Ancienne Valeur de "+input.getAttributName()+": "+input.getLastVersion()
+                                           +"\n Nouvelle Valeur de "+input.getAttributName()+": "+input.getCurrentVersion();
+        }
         return message;
     }
     
-    public String getWebMessage(NotificationInput input, String libelle) throws SQLException {
+    public String getWebMessage(NotificationInput input, String baseMsg) throws SQLException {
         String message = "";
+        String action = input.getAction().split("_")[0];
+        if (action.equals("new") || action.equals("close")) {
+         message = baseMsg+input.getTitre();
+        }
+        
+        if (action.equals("update")) {
+        message =baseMsg+input.getTitre()+"\n Ancienne Valeur de "+input.getAttributName()+": "+input.getLastVersion()
+                                           +"\n Nouvelle Valeur de "+input.getAttributName()+": "+input.getCurrentVersion();
+        }
         return message;
     }
     
-    public String getMobileMessage(NotificationInput input, String libelle) throws SQLException {
+    public String getMobileMessage(NotificationInput input, String baseMsg) throws SQLException {
+        String action = input.getAction().split("_")[0];
         String message = "";
+        if (action.equals("new") || action.equals("close")) {
+         message = baseMsg+input.getTitre();
+        }
+        
+        if (action.equals("update")) {
+        message = baseMsg + input.getTitre()+" de "+input.getLastVersion()+" a "+input.getCurrentVersion();
+         }
+        
         return message;
     }
 }
