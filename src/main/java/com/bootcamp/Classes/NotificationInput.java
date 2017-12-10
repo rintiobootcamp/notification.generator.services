@@ -10,20 +10,22 @@ package com.bootcamp.Classes;
  * @author Bello
  */
 public class NotificationInput {
-    private int entityId;
+    private String titre;
     private String entityType;
     private String action;
     private String attributName;
     private String lastVersion;
     private String currentVersion;
 
-    public int getEntityId() {
-        return entityId;
+    public String getTitre() {
+        return titre;
     }
 
-    public void setEntityId(int entityId) {
-        this.entityId = entityId;
+    public void setTitre(String titre) {
+        this.titre = titre;
     }
+
+    
 
     public String getEntityType() {
         return entityType;

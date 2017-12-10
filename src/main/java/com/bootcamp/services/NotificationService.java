@@ -1,6 +1,7 @@
 package com.bootcamp.services;
 
 import com.bootcamp.Classes.NotificationGn;
+import com.bootcamp.Classes.NotificationInput;
 import com.bootcamp.commons.constants.DatabaseConstants;
 import com.bootcamp.commons.exceptions.DatabaseException;
 import com.bootcamp.commons.models.Criteria;
@@ -84,5 +85,23 @@ public class NotificationService implements DatabaseConstants{
         return false;
     }
     
-
+    public String getSmsMessage(NotificationInput input, String libelle) throws SQLException {
+        String message = "";
+        return message;
+    }
+    
+    public String getMailMessage(NotificationInput input, String libelle) throws SQLException {
+        String message = "";
+        return message;
+    }
+    
+    public String getWebMessage(NotificationInput input, String libelle) throws SQLException {
+        String message = "";
+        return message;
+    }
+    
+    public String getMobileMessage(NotificationInput input, String libelle) throws SQLException {
+        String message = "";
+        return message;
+    }
 }
