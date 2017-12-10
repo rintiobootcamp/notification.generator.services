@@ -29,11 +29,34 @@
         "diffusion": [
             {
                 "canal": "SMS",
-                "message": "Modification de la phase actuelle du projet : "
+                "message": "Modification de la phase actuelle du projet "
             },
             {
                 "canal": "MAIL",
-                "message": "La phase actuelle du projet viens d'être modifier. "
+                "message": "Modification de la phase actuelle du projet "
+            },
+            {
+                "canal": "WEB_APP",
+                "message": "Création du projet "
+            },
+            {
+                "canal": "MOBILE_APP",
+                "message": "Création du projet "
+            }
+        ]
+    },
+    {
+        "libelle": "Modification de projet",
+        "action": "update_project_etat",
+        "gen_event": true,
+        "diffusion": [
+            {
+                "canal": "SMS",
+                "message": "Modification de l'état' du projet "
+            },
+            {
+                "canal": "MAIL",
+                "message": "Modification de l'état du projet "
             },
             {
                 "canal": "WEB_APP",
@@ -69,7 +92,7 @@
         ]
     },
     {
-        "libelle": "creation de debat",
+        "libelle": "Creation de debat",
         "action": "new_debat",
         "gen_event": true,
         "diffusion": [
