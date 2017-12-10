@@ -1,47 +1,70 @@
 [
     {
-        "libelle": "creation de projet",
+        "libelle": "Création de projet",
         "action": "new_project",
         "gen_event": true,
         "diffusion": [
             {
                 "canal": "SMS",
-                "message": "azerty"
+                "message": "Création du projet "
             },
             {
                 "canal": "MAIL",
-                "message": "qsdfghjk"
+                "message": "Un nouveau projet viens d'être créer dans le Programme d'Action du Gouvernement Béninois.\n Le titre de ce projet est : "
             },
             {
                 "canal": "WEB_APP",
-                "message": "qsdfghjk"
+                "message": "Création du projet "
             },
             {
                 "canal": "MOBILE_APP",
-                "message": "qsdfghjk"
+                "message": "Création du projet "
             }
         ]
     },
     {
-        "libelle": "modification de projet",
-        "action": "update_project",
+        "libelle": "Modification de projet",
+        "action": "update_project_phase",
         "gen_event": true,
         "diffusion": [
             {
                 "canal": "SMS",
-                "message": "azerty"
+                "message": "Modification de la phase actuelle du projet "
             },
             {
                 "canal": "MAIL",
-                "message": "qsdfghjk"
+                "message": "Modification de la phase actuelle du projet "
             },
             {
                 "canal": "WEB_APP",
-                "message": "qsdfghjk"
+                "message": "Création du projet "
             },
             {
                 "canal": "MOBILE_APP",
-                "message": "qsdfghjk"
+                "message": "Création du projet "
+            }
+        ]
+    },
+    {
+        "libelle": "Modification de projet",
+        "action": "update_project_etat",
+        "gen_event": true,
+        "diffusion": [
+            {
+                "canal": "SMS",
+                "message": "Modification de l'état du projet "
+            },
+            {
+                "canal": "MAIL",
+                "message": "Modification de l'état du projet "
+            },
+            {
+                "canal": "WEB_APP",
+                "message": "Création du projet "
+            },
+            {
+                "canal": "MOBILE_APP",
+                "message": "Création du projet "
             }
         ]
     },
@@ -52,134 +75,134 @@
         "diffusion": [
             {
                 "canal": "SMS",
-                "message": "azerty"
+                "message": "Modification de l'état du projet "
             },
             {
                 "canal": "MAIL",
-                "message": "qsdfghjk"
+                "message": "Modification de l'état du projet "
             },
             {
                 "canal": "WEB_APP",
-                "message": "qsdfghjk"
+                "message": "Création du projet "
             },
             {
                 "canal": "MOBILE_APP",
-                "message": "qsdfghjk"
+                "message": "Création du projet "
             }
         ]
     },
     {
-        "libelle": "creation de debat",
+        "libelle": "Creation de debat",
         "action": "new_debat",
         "gen_event": true,
         "diffusion": [
             {
                 "canal": "SMS",
-                "message": "azerty"
+                "message": "Création d'un nouveau débat : "
             },
             {
                 "canal": "MAIL",
-                "message": "qsdfghjk"
+                "message": "Un nouveau débat viens d'être créer dans le Programme d'Action du Gouvernement Béninois.\n Le sujet de ce débat est : "
             },
             {
                 "canal": "WEB_APP",
-                "message": "qsdfghjk"
+                "message": "Création du projet "
             },
             {
                 "canal": "MOBILE_APP",
-                "message": "qsdfghjk"
+                "message": "Création du projet "
             }
         ]
     },
     {
-        "libelle": "modification de debat",
-        "action": "update_debat",
+        "libelle": "Modification de l'état d'un debat",
+        "action": "update_debat_commentaire",
         "gen_event": true,
         "diffusion": [
             {
                 "canal": "SMS",
-                "message": "azerty"
+                "message": "Il y a eu plus de 100 nouveaux messages depuis votre dernière connection sur le débat "
             },
             {
                 "canal": "MAIL",
-                "message": "qsdfghjk"
+                "message": "Il y a eu plus de 100 nouveaux messages depuis votre dernière connection sur le débat "
             },
             {
                 "canal": "WEB_APP",
-                "message": "qsdfghjk"
+                "message": "Création du projet "
             },
             {
                 "canal": "MOBILE_APP",
-                "message": "qsdfghjk"
+                "message": "Création du projet "
             }
         ]
     },
     {
-        "libelle": "suppression de debat",
-        "action": "delete_debat",
+        "libelle": "Modification de l'état d'un debat",
+        "action": "update_debat_like",
         "gen_event": true,
         "diffusion": [
             {
                 "canal": "SMS",
-                "message": "azerty"
+                "message": "Il y a eu plus de 100 likes sur le débat "
             },
             {
                 "canal": "MAIL",
-                "message": "qsdfghjk"
+                "message": "Il y a eu plus de 100 likes sur le débat "
             },
             {
                 "canal": "WEB_APP",
-                "message": "qsdfghjk"
+                "message": "Création du projet "
             },
             {
                 "canal": "MOBILE_APP",
-                "message": "qsdfghjk"
+                "message": "Création du projet "
             }
         ]
     },
     {
-        "libelle": "creation de sondage",
+        "libelle": "Creation de sondage",
         "action": "new_sondage",
         "gen_event": true,
         "diffusion": [
             {
                 "canal": "SMS",
-                "message": "azerty"
+                "message": "Création d'un nouveau sondage : "
             },
             {
                 "canal": "MAIL",
-                "message": "qsdfghjk"
+                "message": "Un nouveau sondage viens d'être créer dans le Programme d'Action du Gouvernement Béninois.\n Le sujet de ce sondage est : "
             },
             {
                 "canal": "WEB_APP",
-                "message": "qsdfghjk"
+                "message": "Création du projet "
             },
             {
                 "canal": "MOBILE_APP",
-                "message": "qsdfghjk"
+                "message": "Création du projet "
             }
         ]
     },
     {
-        "libelle": "modification de sondage",
-        "action": "update_sondage",
+        "libelle": "Cloture de sondage",
+        "action": "close_sondage",
         "gen_event": true,
         "diffusion": [
             {
                 "canal": "SMS",
-                "message": "azerty"
+                "message": "Un sondage a été cloturé. Il s'agit du sondage ayant pour titre "
             },
             {
                 "canal": "MAIL",
-                "message": "qsdfghjk"
+                "message": "Un sondage a été cloturé. Il s'agit du sondage ayant pour titre "
             },
             {
                 "canal": "WEB_APP",
-                "message": "qsdfghjk"
+                "message": "Création du projet "
             },
             {
                 "canal": "MOBILE_APP",
-                "message": "qsdfghjk"
+                "message": "Création du projet "
             }
         ]
     },

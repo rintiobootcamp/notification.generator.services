@@ -1,5 +1,6 @@
 package com.bootcamp.controllers;
 
+import com.bootcamp.Classes.NotificationInput;
 import com.bootcamp.commons.exceptions.DatabaseException;
 import com.bootcamp.entities.Notification;
 import com.bootcamp.security.JwtAuthentification;
@@ -32,18 +33,18 @@ public class NotificationController {
     @RequestMapping(method = RequestMethod.POST)
     @ApiVersions({"1.0"})
     @ApiOperation(value = "Create a new notification", notes = "Create a new notification")
-    public ResponseEntity<Notification> create(@RequestBody @Valid Notification notification) {
+    public ResponseEntity<Boolean> checkEventAndgenerateNotification(@RequestParam("object") NotificationInput input) {
 
         HttpStatus httpStatus = null;
-
+        
         try {
-            notificationService.create(notification);
+            notificationService.checkEventAndgenerateNotification(input);
             httpStatus = HttpStatus.OK;
         }catch (SQLException exception){
             httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
         }
 
-        return new ResponseEntity<Notification>(notification, httpStatus);
+        return new ResponseEntity<>(notification, httpStatus);
     }
     
     @RequestMapping(method = RequestMethod.POST)
