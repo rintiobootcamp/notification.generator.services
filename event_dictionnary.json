@@ -1,47 +1,47 @@
 [
     {
-        "libelle": "creation de projet",
+        "libelle": "Création de projet",
         "action": "new_project",
         "gen_event": true,
         "diffusion": [
             {
                 "canal": "SMS",
-                "message": "azerty"
+                "message": "Création du projet "
             },
             {
                 "canal": "MAIL",
-                "message": "qsdfghjk"
+                "message": "Un nouveau projet viens d'être créer dans le Programme d'Action du Gouvernement Béninois.\n Le titre de ce projet est : "
             },
             {
                 "canal": "WEB_APP",
-                "message": "qsdfghjk"
+                "message": "Création du projet "
             },
             {
                 "canal": "MOBILE_APP",
-                "message": "qsdfghjk"
+                "message": "Création du projet "
             }
         ]
     },
     {
-        "libelle": "modification de projet",
-        "action": "update_project",
+        "libelle": "Modification de projet",
+        "action": "update_project_phase",
         "gen_event": true,
         "diffusion": [
             {
                 "canal": "SMS",
-                "message": "azerty"
+                "message": "Modification de la phase actuelle du projet : "
             },
             {
                 "canal": "MAIL",
-                "message": "qsdfghjk"
+                "message": "La phase actuelle du projet viens d'être modifier. "
             },
             {
                 "canal": "WEB_APP",
-                "message": "qsdfghjk"
+                "message": "Création du projet "
             },
             {
                 "canal": "MOBILE_APP",
-                "message": "qsdfghjk"
+                "message": "Création du projet "
             }
         ]
     },
