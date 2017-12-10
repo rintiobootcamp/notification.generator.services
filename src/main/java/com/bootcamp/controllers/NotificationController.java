@@ -29,10 +29,10 @@ public class NotificationController {
     @Autowired
     HttpServletRequest request;
 
-    @RequestMapping(method = RequestMethod.POST, value="/{enti}")
+    @RequestMapping(method = RequestMethod.POST)
     @ApiVersions({"1.0"})
     @ApiOperation(value = "Create a new notification", notes = "Create a new notification")
-    public ResponseEntity<Boolean> checkEventAndgenerateNotification(@RequestBody @Valid Object object) {
+    public ResponseEntity<Boolean> checkEventAndgenerateNotification(@RequestParam("object") MultipartFile file) {
 
         HttpStatus httpStatus = null;
         
