@@ -1,9 +1,9 @@
 package com.bootcamp.controllers;
 
 import com.bootcamp.commons.exceptions.DatabaseException;
-import com.bootcamp.entities.User;
+import com.bootcamp.entities.Notification;
 import com.bootcamp.security.JwtAuthentification;
-import com.bootcamp.services.UserService;
+import com.bootcamp.services.NotificationService;
 import com.bootcamp.version.ApiVersions;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -19,43 +19,43 @@ import java.sql.SQLException;
 import java.util.List;
 
 
-@RestController("UserController")
-@RequestMapping("/users")
-@Api(value = "User API", description = "User API")
+@RestController("NotificationController")
+@RequestMapping("/notifications")
+@Api(value = "Notification API", description = "Notification API")
 public class NotificationController {
     
     @Autowired
-    UserService userService;
+    NotificationService notificationService;
     @Autowired
     HttpServletRequest request;
 
     @RequestMapping(method = RequestMethod.POST)
     @ApiVersions({"1.0"})
-    @ApiOperation(value = "Create a new user", notes = "Create a new user")
-    public ResponseEntity<User> create(@RequestBody @Valid User user) {
+    @ApiOperation(value = "Create a new notification", notes = "Create a new notification")
+    public ResponseEntity<Notification> create(@RequestBody @Valid Notification notification) {
 
         HttpStatus httpStatus = null;
 
         try {
-            userService.create(user);
+            notificationService.create(notification);
             httpStatus = HttpStatus.OK;
         }catch (SQLException exception){
             httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
         }
 
-        return new ResponseEntity<User>(user, httpStatus);
+        return new ResponseEntity<Notification>(notification, httpStatus);
     }
     
     @RequestMapping(method = RequestMethod.POST)
     @ApiVersions({"1.0"})
     @ApiOperation(value = "login", notes = "login")
-    public String authentification(@RequestBody @Valid User user) throws SQLException {
+    public String authentification(@RequestBody @Valid Notification notification) throws SQLException {
 
         HttpStatus httpStatus = null;
         String token = "";
         
-        if(userService.getByLoginAndPwd(user.getId(), user.getLogin())){
-            token = JwtAuthentification.addAuthentication(user);
+        if(notificationService.getByLoginAndPwd(notification.getId(), notification.getLogin())){
+            token = JwtAuthentification.addAuthentication(notification);
             httpStatus = HttpStatus.OK;        
         }
 
@@ -65,31 +65,31 @@ public class NotificationController {
 /*
     @RequestMapping(method = RequestMethod.PUT, value = "/")
     @ApiVersions({"1.0"})
-    @ApiOperation(value = "Update a new user", notes = "Update a new user")
-    public ResponseEntity<User> update(@RequestBody @Valid User user) {
+    @ApiOperation(value = "Update a new notification", notes = "Update a new notification")
+    public ResponseEntity<Notification> update(@RequestBody @Valid Notification notification) {
 
         HttpStatus httpStatus = null;
 
         try {
-            userService.update(user);
+            notificationService.update(notification);
             httpStatus = HttpStatus.OK;
         }catch (SQLException exception){
             
             httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
         }
 
-        return new ResponseEntity<User>(user, httpStatus);
+        return new ResponseEntity<Notification>(notification, httpStatus);
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/{id}")
     @ApiVersions({"1.0"})
-    @ApiOperation(value = "Delete a user", notes = "Delete a user")
+    @ApiOperation(value = "Delete a notification", notes = "Delete a notification")
     public void delete(@PathVariable(name = "id") int id) {
 
         HttpStatus httpStatus = null;
 
         try {
-            User user = userService.delete(id);
+            Notification notification = notificationService.delete(id);
             httpStatus = HttpStatus.OK;
         }catch (SQLException exception){
             
@@ -101,39 +101,39 @@ public class NotificationController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/{id}")
     @ApiVersions({"1.0"})
-    @ApiOperation(value = "Read a user", notes = "Read a user")
-    public ResponseEntity<User> read(@PathVariable(name = "id") int id) {
+    @ApiOperation(value = "Read a notification", notes = "Read a notification")
+    public ResponseEntity<Notification> read(@PathVariable(name = "id") int id) {
 
         HttpStatus httpStatus = null;
-        User user = new User();
+        Notification notification = new Notification();
         try {
-            user = userService.read(id);
+            notification = notificationService.read(id);
             httpStatus = HttpStatus.OK;
         }catch (SQLException exception){
             
             httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
         }
 
-        return new ResponseEntity<User>(user, httpStatus);
+        return new ResponseEntity<Notification>(notification, httpStatus);
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/")
     @ApiVersions({"1.0"})
-    @ApiOperation(value = "Read a user", notes = "Read a user")
-    public ResponseEntity<User> read() {
+    @ApiOperation(value = "Read a notification", notes = "Read a notification")
+    public ResponseEntity<Notification> read() {
 
-        User user = new User();
+        Notification notification = new Notification();
         HttpStatus httpStatus = null;
 
         try {
-            List<User> users = userService.read(request);
+            List<Notification> notifications = notificationService.read(request);
             httpStatus = HttpStatus.OK;
         }catch (SQLException | IllegalAccessException | DatabaseException | InvocationTargetException exception){
             
             httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
         }
 
-        return new ResponseEntity<User>(user, httpStatus);
+        return new ResponseEntity<Notification>(notification, httpStatus);
     }
 
    */

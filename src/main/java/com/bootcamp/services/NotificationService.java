@@ -59,7 +59,7 @@ public class NotificationService implements DatabaseConstants{
         return notifications.get(0);
     }
     
-    public boolean checkEventAndgenerateNotification(String action, int entityId, String entityType) throws FileNotFoundException{
+    public boolean checkEventAndgenerateNotification(String action, int entityId, String entityType) throws FileNotFoundException, SQLException{
         Gson gson = new Gson();
         
          BufferedReader bufferedReader = new BufferedReader(new FileReader(eventDictionnary));
@@ -73,7 +73,11 @@ public class NotificationService implements DatabaseConstants{
                 notification.setAction(notificationgn.getAction());
                 notification.setEntityId(entityId);
                 notification.setEntityType(entityType);
-                notification.setContenuGsm(notificationgn.getDiffusions().get);
+                notification.setContenuGsm(notificationgn.getDiffusions().get(0).getMessage());
+                notification.setContenuMail(notificationgn.getDiffusions().get(1).getMessage());
+                notification.setContenuMobileApp(notificationgn.getDiffusions().get(3).getMessage());
+                notification.setContenuWebApp(notificationgn.getDiffusions().get(2).getMessage());
+                this.create(notification);
                 return true;              
             }
         }
