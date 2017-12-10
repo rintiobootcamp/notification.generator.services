@@ -14,7 +14,7 @@ import org.testng.annotations.Test;
 
 /**
  *
- * @author edwigegédéon
+ * @author Bignon
  */
 public class NotificationPrimitiveTest {
     NotificationService notificationService = new NotificationService();

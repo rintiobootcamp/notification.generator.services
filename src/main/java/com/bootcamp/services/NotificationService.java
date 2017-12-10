@@ -5,6 +5,7 @@ import com.bootcamp.Classes.NotificationInput;
 import com.bootcamp.commons.constants.DatabaseConstants;
 import com.bootcamp.commons.models.Criteria;
 import com.bootcamp.commons.models.Criterias;
+import com.bootcamp.crud.NotificationCRUD;
 import com.bootcamp.entities.Notification;
 import com.google.gson.Gson;
 import java.io.BufferedReader;
@@ -57,8 +58,7 @@ public class NotificationService implements DatabaseConstants{
     
     public List<Notification> read() throws SQLException {
         List<Notification> notifications = NotificationCRUD.read();
-
-        return notifications.get(0);
+        return notifications;
     }
     
     public boolean checkEventAndgenerateNotification(NotificationInput input) throws FileNotFoundException, SQLException{
