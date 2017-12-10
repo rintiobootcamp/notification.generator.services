@@ -73,6 +73,7 @@ public class NotificationService implements DatabaseConstants{
                 notification.setAction(notificationgn.getAction());
                 notification.setEntityId(entityId);
                 notification.setEntityType(entityType);
+                notification.setContenuGsm(notificationgn.getDiffusions().get);
                 return true;              
             }
         }
