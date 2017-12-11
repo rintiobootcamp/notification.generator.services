@@ -30,11 +30,6 @@ public class NotificationService implements DatabaseConstants {
     @Value("${event.dictionnary.path}")
     String eventDictionnary;
 
-    public String readFromFile() throws SQLException, FileNotFoundException, IOException {
-        BufferedReader bufferedReader = new BufferedReader(new FileReader("D:/Epub/eventDictionnary.json"));
-        return bufferedReader.toString();
-    }
-
     public Notification create(Notification notification) throws SQLException {
         notification.setDateCreation(System.currentTimeMillis());
         notification.setDateMiseAJour(System.currentTimeMillis());
@@ -83,7 +78,7 @@ public class NotificationService implements DatabaseConstants {
                 notification.setAction(notificationgn.getAction());
                 notification.setEntityId(input.getEntityId());
                 notification.setEntityType(input.getEntityType());
-
+				
                 notification.setContenuGsm(getSmsMessage(input, notificationgn.getDiffusions().get(0).getMessage()));
                 notification.setContenuMail(getMailMessage(input, notificationgn.getDiffusions().get(1).getMessage()));
                 notification.setContenuMobileApp(getMobileMessage(input, notificationgn.getDiffusions().get(3).getMessage()));
@@ -153,6 +148,7 @@ public class NotificationService implements DatabaseConstants {
 
     public static String readFileToString() throws IOException {
         String filePath = "D:/Epub/eventDictionnary.json";
+
         StringBuilder fileData = new StringBuilder(1000);//Constructs a string buffer with no characters in it and the specified initial capacity
         BufferedReader reader = new BufferedReader(new FileReader(filePath));
 
