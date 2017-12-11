@@ -27,8 +27,6 @@ public class NotificationController {
     
     @Autowired
     NotificationService notificationService;
-    @Autowired
-    HttpServletRequest request;
 
     @RequestMapping(method = RequestMethod.POST)
     @ApiVersions({"1.0"})
@@ -100,7 +98,7 @@ public class NotificationController {
         return new ResponseEntity<Notification>(notification, httpStatus);
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/")
+    @RequestMapping(method = RequestMethod.GET)
     @ApiVersions({"1.0"})
     @ApiOperation(value = "Read a notification", notes = "Read a notification")
     public ResponseEntity<List<Notification>> read() {

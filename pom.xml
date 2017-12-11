@@ -13,26 +13,43 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <failOnMissingWebXml>false</failOnMissingWebXml>
-		<!--
-        <docker.image.prefix>pagSecurity</docker.image.prefix>
-		-->
     </properties>
 
     <dependencies>
         <!-- https://mvnrepository.com/artifact/org.testng/testng -->
         <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <version>6.11</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
             <groupId>com.bootcamp</groupId>
             <artifactId>commons</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.bootcamp</groupId>
+            <artifactId>commons.ws</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.bootcamp</groupId>
+                    <artifactId>commons</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
         <dependency>
             <groupId>com.bootcamp</groupId>
             <artifactId>service.crud</artifactId>
             <version>1.0-SNAPSHOT</version>
             <exclusions>
                 <exclusion>
-                   <groupId>com.bootcamp</groupId>
-                   <artifactId>commons</artifactId>
+                    <groupId>com.bootcamp</groupId>
+                    <artifactId>commons</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
@@ -154,28 +171,6 @@
             <artifactId>db-access</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
-        
-        <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-security -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-security</artifactId>
-            <version>1.5.4.RELEASE</version>
-        </dependency>
-
-
-        <dependency>
-            <groupId>io.jsonwebtoken</groupId>
-            <artifactId>jjwt</artifactId>
-            <version>0.7.0</version>
-            
-        </dependency>
-        <dependency>
-            <groupId>org.testng</groupId>
-            <artifactId>testng</artifactId>
-            <version>6.11</version>
-            <scope>test</scope>
-            <type>jar</type>
-        </dependency>
     </dependencies>
 
     <profiles>
@@ -219,7 +214,7 @@
     </profiles>
 
     <build>
-      <finalName>boot.security.Services</finalName>  
+      <finalName>notificationServices</finalName>  
 
               
         <plugins>
@@ -228,17 +223,6 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>1.5.3.RELEASE</version>
-                <!--<configuration>-->
-                    <!--<mainClass>com.bootcamp.application.Application</mainClass>-->
-                    <!--<layout>ZIP</layout>-->
-                <!--</configuration>-->
-                <!--<executions>-->
-                    <!--<execution>-->
-                        <!--<goals>-->
-                            <!--<goal>repackage</goal>-->
-                        <!--</goals>-->
-                    <!--</execution>-->
-                <!--</executions>-->
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -247,30 +231,7 @@
                     <source>1.7</source>
                     <target>1.7</target>
                 </configuration>
-                
             </plugin>
-                            <!--DOCKER IMAGE PLUGIN -->
-			<!--				
-            <plugin>
-                <groupId>com.spotify</groupId>
-                <artifactId>docker-maven-plugin</artifactId>
-                <configuration>
-                    <imageName>pagProject/security</imageName>
-                    <baseImage>java:8</baseImage>
-                    <entryPoint>["java", "-jar", "/${project.build.finalName}.war"]</entryPoint>
-                    -->
-                    <!-- copy the service's jar file from target into the root directory of the image --> 
-                    <!--
-					<resources>
-                        <resource>
-                            <targetPath>/</targetPath>
-                            <directory>${project.build.directory}</directory>
-                            <include>${project.build.finalName}.war</include>
-                        </resource>
-                    </resources>
-                </configuration>
-            </plugin>
-			-->
         </plugins>
     </build>
 </project>
