@@ -1,7 +1,8 @@
-package com.bootcamp.services;
+package com.bootcamp.Generator.services;
 
-import com.bootcamp.Classes.NotificationGn;
-import com.bootcamp.Classes.NotificationInput;
+import com.bootcamp.Generator.Classes.NotificationGn;
+import com.bootcamp.Generator.Classes.NotificationInput;
+import com.bootcamp.Tasks.SenderTask;
 import com.bootcamp.commons.constants.DatabaseConstants;
 import com.bootcamp.commons.models.Criteria;
 import com.bootcamp.commons.models.Criterias;
@@ -19,12 +20,13 @@ import org.springframework.beans.factory.annotation.Value;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Timer;
 
 /**
  * Created by Bignon on 11/27/17.
  */
 @Component
-public class NotificationService implements DatabaseConstants {
+public class SenderService implements DatabaseConstants {
 
     //@Value("${media.location}")
     @Value("${event.dictionnary.path}")
@@ -33,6 +35,10 @@ public class NotificationService implements DatabaseConstants {
     public Notification create(Notification notification) throws SQLException {
         notification.setDateCreation(System.currentTimeMillis());
         notification.setDateMiseAJour(System.currentTimeMillis());
+        notification.setSendMail(false);
+        notification.setSendSms(false);
+        notification.setSendMobil(false);
+        notification.setSendWebApp(false);
         NotificationCRUD.create(notification);
         return notification;
     }
@@ -165,4 +171,10 @@ public class NotificationService implements DatabaseConstants {
         String returnStr = fileData.toString();
         return returnStr;
     }
+    
+//    public static void senderTimer(){
+//        Timer timer;
+//        timer = new Timer();
+//        timer.schedule(new SenderTask(), 1000, 5000);   
+// }
 }

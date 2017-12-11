@@ -5,9 +5,9 @@
  */
 package com.bootcamp;
 
-import com.bootcamp.Classes.NotificationGn;
-import com.bootcamp.Classes.NotificationInput;
-import com.bootcamp.services.NotificationService;
+import com.bootcamp.Generator.Classes.NotificationGn;
+import com.bootcamp.Generator.Classes.NotificationInput;
+import com.bootcamp.Generator.services.NotificationService;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import java.io.BufferedReader;

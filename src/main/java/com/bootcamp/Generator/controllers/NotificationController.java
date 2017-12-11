@@ -1,8 +1,8 @@
-package com.bootcamp.controllers;
+package com.bootcamp.Generator.controllers;
 
-import com.bootcamp.Classes.NotificationInput;
+import com.bootcamp.Generator.Classes.NotificationInput;
 import com.bootcamp.entities.Notification;
-import com.bootcamp.services.NotificationService;
+import com.bootcamp.Generator.services.NotificationService;
 import com.bootcamp.version.ApiVersions;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

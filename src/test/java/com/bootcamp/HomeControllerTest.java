@@ -1,6 +1,6 @@
 package com.bootcamp;
 
-import com.bootcamp.services.NotificationService;
+import com.bootcamp.Generator.services.NotificationService;
 import java.io.IOException;
 import java.sql.SQLException;
 import org.testng.Assert;
