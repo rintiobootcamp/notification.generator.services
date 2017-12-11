@@ -28,7 +28,7 @@ public class NotificationController {
     @Autowired
     NotificationService notificationService;
 
-    @RequestMapping(method = RequestMethod.POST, value = "/")
+    @RequestMapping(method = RequestMethod.POST)
     @ApiVersions({"1.0"})
     @ApiOperation(value = "Create a new notification", notes = "Create a new notification")
     public ResponseEntity<Boolean> checkEventAndgenerateNotification(NotificationInput input) throws FileNotFoundException, IOException, IOException {
@@ -98,7 +98,7 @@ public class NotificationController {
         return new ResponseEntity<Notification>(notification, httpStatus);
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/")
+    @RequestMapping(method = RequestMethod.GET)
     @ApiVersions({"1.0"})
     @ApiOperation(value = "Read a notification", notes = "Read a notification")
     public ResponseEntity<List<Notification>> read() {
