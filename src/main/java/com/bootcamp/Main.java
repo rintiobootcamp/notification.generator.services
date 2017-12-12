@@ -6,6 +6,7 @@
 package com.bootcamp;
 
 import com.bootcamp.Diffusion.Classes.MailSender;
+import com.bootcamp.Diffusion.services.SenderService;
 import com.bootcamp.Tasks.SenderTask;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -20,8 +21,8 @@ public class Main {
         
     public static void main(String[] args) throws FileNotFoundException, IOException, MessagingException, SQLException {
         //MailSender.sender("sendMail");
-        SenderTask sender = new SenderTask();
-        sender.run();
+        SenderService sender = new SenderService();
+        sender.senderTimer();
     }
 
 
