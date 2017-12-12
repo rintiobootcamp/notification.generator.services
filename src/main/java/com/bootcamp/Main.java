@@ -6,8 +6,10 @@
 package com.bootcamp;
 
 import com.bootcamp.Diffusion.Classes.MailSender;
+import com.bootcamp.Tasks.SenderTask;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.sql.SQLException;
 import javax.mail.MessagingException;
 
 /**
@@ -16,9 +18,10 @@ import javax.mail.MessagingException;
  */
 public class Main {
         
-    public static void main(String[] args) throws FileNotFoundException, IOException, MessagingException {
+    public static void main(String[] args) throws FileNotFoundException, IOException, MessagingException, SQLException {
         //MailSender.sender("sendMail");
-        MailSender.sendFromGMail("Bjr je suis un msg qui vient d'un code java. \n Remercier Bignon et Bello !");
+        SenderTask sender = new SenderTask();
+        sender.run();
     }
 
 

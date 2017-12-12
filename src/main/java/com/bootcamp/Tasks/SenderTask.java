@@ -6,6 +6,7 @@
 package com.bootcamp.Tasks;
 
 import com.bootcamp.Diffusion.Classes.MailSender;
+import java.sql.SQLException;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.logging.Level;
@@ -22,6 +23,8 @@ public class SenderTask extends TimerTask{
         try {
             MailSender.sender("sendMail");
         } catch (MessagingException ex) {
+            Logger.getLogger(SenderTask.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
             Logger.getLogger(SenderTask.class.getName()).log(Level.SEVERE, null, ex);
         }
     } 

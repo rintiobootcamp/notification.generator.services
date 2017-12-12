@@ -24,11 +24,11 @@ public class SenderController {
         HttpStatus httpStatus = null;
                 try {
                 senderService.senderTimer();
+				httpStatus = HttpStatus.OK;
         } catch (Exception e) {
-        }
-               
-             httpStatus = HttpStatus.OK;
-
+			
+        
+		}
     }
 
 }
