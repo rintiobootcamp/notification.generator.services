@@ -6,7 +6,10 @@
 package com.bootcamp.Diffusion.Classes;
 
 import com.bootcamp.commons.models.Criteria;
+import com.bootcamp.commons.models.Criterias;
+import com.bootcamp.crud.NotificationCRUD;
 import com.bootcamp.entities.Notification;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Properties;
 import java.util.Timer;
@@ -42,6 +45,7 @@ public class MailSender {
         props.put("mail.smtp.password", pass);
         props.put("mail.smtp.port", "587");
         props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.ssl.trust", "smtp.gmail.com");
 
         Session session = Session.getDefaultInstance(props);
         MimeMessage message = new MimeMessage(session);
@@ -74,16 +78,22 @@ public class MailSender {
         }
     }
      
-     public static void sender(String boolcanal) throws MessagingException{
+     public static void sender(String boolcanal) throws MessagingException, SQLException{
+         Criterias criterias = new Criterias();
          Criteria criteria = new Criteria(boolcanal, "=", false);
-         List<Notification> notifications = NotificationCRUD.read(criteria);
+         criterias.addCriteria(criteria);
+         List<Notification> notifications = NotificationCRUD.read(criterias);
          for (Notification notification : notifications) {
              if (boolcanal.equals("sendMail")) {
                   sendFromGMail(notification.getContenuMail());
+                  notification.setSendMail(true);
+                  NotificationCRUD.update(notification);
              }
              
              if (boolcanal.equals("sendSms")) {
-               sendFromGMail(notification.getContenuGsm());  
+               sendFromGMail(notification.getContenuGsm());
+               notification.setSendSms(true);
+               NotificationCRUD.update(notification);
              }
            
          }

@@ -26,7 +26,7 @@ import java.util.Timer;
  * Created by Bignon on 11/27/17.
  */
 @Component
-public class SenderService implements DatabaseConstants {
+public class NotificationService implements DatabaseConstants {
 
     //@Value("${media.location}")
     @Value("${event.dictionnary.path}")
