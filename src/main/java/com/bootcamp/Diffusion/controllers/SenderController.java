@@ -14,21 +14,20 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/send")
 @Api(value = "Diffusion API", description = "Diffusion API")
 public class SenderController {
+
     @Autowired
     SenderService senderService;
-    
+
     @RequestMapping(method = RequestMethod.GET)
     @ApiVersions({"1.0"})
     @ApiOperation(value = "Diffuse a message", notes = "Diffuse a message")
     public void send() {
         HttpStatus httpStatus = null;
-                try {
-                senderService.senderTimer();
-				httpStatus = HttpStatus.OK;
+        try {
+            senderService.senderTimer();
+            httpStatus = HttpStatus.OK;
         } catch (Exception e) {
-			
-        
-		}
-    }
 
+        }
+    }
 }

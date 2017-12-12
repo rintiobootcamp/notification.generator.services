@@ -26,17 +26,19 @@ import javax.mail.internet.MimeMessage;
  * @author edwigegédéon
  */
 public class MailSender {
-        private static String USER_NAME = "bignonfebron";  // GMail user name (just the part before "@gmail.com")
-        private static String PASSWORD = "amuztadjitadjidation"; // GMail password
-        private static String[] RECIPIENT = {"mboabello@yahoo.fr","chrishouns21@gmail.com"};
-        private static String SUBJECT = "Notification de la plateforme PAG";
-     public static void sendFromGMail(String body) throws MessagingException {
-         String from = USER_NAME;
-         String pass = PASSWORD;
-         String[] to = RECIPIENT;
-         String subject = SUBJECT;
-         
-         System.setProperty("https.protocols", "TLSv1.1");
+
+    private static String USER_NAME = "bignonfebron";  // GMail user name (just the part before "@gmail.com")
+    private static String PASSWORD = "amuztadjitadjidation"; // GMail password
+    private static String[] RECIPIENT = {"mboabello@yahoo.fr", "chrishouns21@gmail.com", "contact@institute.rintio.com"};
+    private static String SUBJECT = "Notification de la plateforme PAG";
+
+    public static void sendFromGMail(String body) throws MessagingException {
+        String from = USER_NAME;
+        String pass = PASSWORD;
+        String[] to = RECIPIENT;
+        String subject = SUBJECT;
+
+        System.setProperty("https.protocols", "TLSv1.1");
         Properties props = System.getProperties();
         String host = "smtp.gmail.com";
         props.put("mail.smtp.starttls.enable", "true");
@@ -55,11 +57,11 @@ public class MailSender {
             InternetAddress[] toAddress = new InternetAddress[to.length];
 
             // To get the array of addresses
-            for( int i = 0; i < to.length; i++ ) {
+            for (int i = 0; i < to.length; i++) {
                 toAddress[i] = new InternetAddress(to[i]);
             }
 
-            for( int i = 0; i < toAddress.length; i++) {
+            for (int i = 0; i < toAddress.length; i++) {
                 message.addRecipient(Message.RecipientType.TO, toAddress[i]);
             }
 
@@ -69,43 +71,38 @@ public class MailSender {
             transport.connect(host, from, pass);
             transport.sendMessage(message, message.getAllRecipients());
             transport.close();
-        }
-        catch (AddressException ae) {
+        } catch (AddressException ae) {
             ae.printStackTrace();
-        }
-        catch (MessagingException me) {
+        } catch (MessagingException me) {
             me.printStackTrace();
         }
     }
-     
-     public static void sender(String boolcanal) throws MessagingException, SQLException{
-         Criterias criterias = new Criterias();
-         Criteria criteria = new Criteria(boolcanal, "=", false);
-         criterias.addCriteria(criteria);
-         List<Notification> notifications = NotificationCRUD.read(criterias);
-         for (Notification notification : notifications) {
-             if (boolcanal.equals("sendMail")) {
-                  sendFromGMail(notification.getContenuMail());
-                  notification.setSendMail(true);
-                  NotificationCRUD.update(notification);
-             }
-             
-             if (boolcanal.equals("sendSms")) {
-               sendFromGMail(notification.getContenuGsm());
-               notification.setSendSms(true);
-               NotificationCRUD.update(notification);
-             }
-           
-         }
-     }
-     
-     
+
+    public static void sender(String boolcanal) throws MessagingException, SQLException {
+        Criterias criterias = new Criterias();
+        Criteria criteria = new Criteria(boolcanal, "=", false);
+        criterias.addCriteria(criteria);
+        List<Notification> notifications = NotificationCRUD.read(criterias);
+        for (Notification notification : notifications) {
+            if (boolcanal.equals("sendMail")) {
+                sendFromGMail(notification.getContenuMail());
+                notification.setSendMail(true);
+                NotificationCRUD.update(notification);
+            }
+
+            if (boolcanal.equals("sendSms")) {
+                sendFromGMail(notification.getContenuGsm());
+                notification.setSendSms(true);
+                NotificationCRUD.update(notification);
+            }
+
+        }
+    }
+
 //  public  void sender() throws MessagingException{
 //     List<String> mailMsgs = getMsgToSend("sendMail"); 
 //      for (String mailMsg : mailMsgs) {
 //         sendFromGMail(mailMsg); 
 //      }
 //  }
-  
- 
 }
