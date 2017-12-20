@@ -1,5 +1,8 @@
 .idea
 .gradle
 CathegoriesRestServices.iml
-target
+target/
 /src/main/resources/
+notification.generator.services.iml
+log.out
+logs/

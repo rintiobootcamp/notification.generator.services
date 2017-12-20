@@ -45,7 +45,7 @@ public class NotificationController {
         return new ResponseEntity<>(result, httpStatus);
     }
     
-    @RequestMapping(method = RequestMethod.PUT, value = "/")
+    @RequestMapping(method = RequestMethod.PUT)
     @ApiVersions({"1.0"})
     @ApiOperation(value = "Update a new notification", notes = "Update a new notification")
     public ResponseEntity<Notification> update(@RequestBody @Valid Notification notification) {
@@ -66,17 +66,10 @@ public class NotificationController {
     @RequestMapping(method = RequestMethod.DELETE, value = "/{id}")
     @ApiVersions({"1.0"})
     @ApiOperation(value = "Delete a notification", notes = "Delete a notification")
-    public void delete(@PathVariable(name = "id") int id) {
+    public ResponseEntity<Boolean> delete(@PathVariable(name = "id") int id) throws Exception{
 
-        HttpStatus httpStatus = null;
-
-        try {
-            Notification notification = notificationService.delete(id);
-            httpStatus = HttpStatus.OK;
-        }catch (SQLException exception){
-            
-            httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
-        }
+      boolean done = notificationService.delete( id );
+      return new ResponseEntity<Boolean>( done,HttpStatus.OK );
 
     }
 

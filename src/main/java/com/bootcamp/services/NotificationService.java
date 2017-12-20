@@ -28,8 +28,8 @@ public class NotificationService implements DatabaseConstants {
     
     SenderService senderService;
 
-    @Value("${event.dictionnary.path}")
-    String eventDictionnary;
+    @Value("${event_dictionnary_path}")
+    private String eventDictionnary;
     
     @Value("${client_web_base_path}")
     String web_path;
@@ -51,10 +51,9 @@ public class NotificationService implements DatabaseConstants {
         return notification;
     }
 
-    public Notification delete(int id) throws SQLException {
+    public boolean delete(int id) throws SQLException {
         Notification notification = read(id);
-        NotificationCRUD.delete(notification);
-        return notification;
+        return NotificationCRUD.delete(notification);
     }
 
     public Notification read(int id) throws SQLException {
@@ -78,6 +77,8 @@ public class NotificationService implements DatabaseConstants {
         for (NotificationGn notificationgn : notificationgns) {
             //Si l'action de l'input est égale à l'une des actions du event dictionnary et
             //si la génation est activer, on génére une notification
+            System.out.println( notificationgn.getAction() );
+            System.out.println( input.getAction().toString() );
             if (notificationgn.getAction().equalsIgnoreCase(input.getAction().toString()) && notificationgn.isGen_event()) {
                 //Construire l'objet notificztion
                 Notification notification = new Notification();
@@ -85,7 +86,6 @@ public class NotificationService implements DatabaseConstants {
                 notification.setAction(notificationgn.getAction());
                 notification.setEntityId(input.getEntityId());
                 notification.setEntityType(input.getEntityType());
-                
                 notification.setContenuGsm(getSmsMessage(input, notificationgn.getDiffusions().get(0).getMessage()));
                 notification.setContenuMail(getMailMessage(input, notificationgn.getDiffusions().get(1).getMessage()));
                 notification.setContenuMobileApp(getMobileMessage(input, notificationgn.getDiffusions().get(3).getMessage()));
@@ -159,9 +159,8 @@ public class NotificationService implements DatabaseConstants {
         return message;
     }
 
-    public static String readFileToString() throws IOException {
-        String filePath = "D:/Epub/eventDictionnary.json";
-
+    public String readFileToString() throws IOException {
+        String filePath = eventDictionnary;
         StringBuilder fileData = new StringBuilder(1000);//Constructs a string buffer with no characters in it and the specified initial capacity
         BufferedReader reader = new BufferedReader(new FileReader(filePath));
 
