@@ -12,6 +12,7 @@ import com.bootcamp.commons.enums.Action;
  * @author Bello
  */
 public class NotificationInput {
+    private int id;
     private String titre;
     private int entityId;
     private String entityType;
@@ -19,6 +20,14 @@ public class NotificationInput {
     private String attributName;
     private String lastVersion;
     private String currentVersion;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getTitre() {
         return titre;
