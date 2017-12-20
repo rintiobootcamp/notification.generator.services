@@ -1,8 +1,7 @@
-package com.bootcamp.Generator.services;
+package com.bootcamp.services;
 
-import com.bootcamp.Generator.Classes.NotificationGn;
-import com.bootcamp.Generator.Classes.NotificationInput;
-import com.bootcamp.Tasks.SenderTask;
+import com.bootcamp.classes.NotificationGn;
+import com.bootcamp.classes.NotificationInput;
 import com.bootcamp.commons.constants.DatabaseConstants;
 import com.bootcamp.commons.models.Criteria;
 import com.bootcamp.commons.models.Criterias;
@@ -20,7 +19,6 @@ import org.springframework.beans.factory.annotation.Value;
 
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Timer;
 
 /**
  * Created by Bignon on 11/27/17.
@@ -28,9 +26,11 @@ import java.util.Timer;
 @Component
 public class NotificationService implements DatabaseConstants {
 
-    //@Value("${media.location}")
     @Value("${event.dictionnary.path}")
     String eventDictionnary;
+    
+    @Value("${client_web_base_path}")
+    String web_path;
 
     public Notification create(Notification notification) throws SQLException {
         notification.setDateCreation(System.currentTimeMillis());
@@ -46,14 +46,12 @@ public class NotificationService implements DatabaseConstants {
     public Notification update(Notification notification) throws SQLException {
         notification.setDateMiseAJour(System.currentTimeMillis());
         NotificationCRUD.update(notification);
-
         return notification;
     }
 
     public Notification delete(int id) throws SQLException {
         Notification notification = read(id);
         NotificationCRUD.delete(notification);
-
         return notification;
     }
 
@@ -61,11 +59,10 @@ public class NotificationService implements DatabaseConstants {
         Criterias criterias = new Criterias();
         criterias.addCriteria(new Criteria("id", "=", id));
         List<Notification> notifications = NotificationCRUD.read(criterias);
-
         return notifications.get(0);
     }
 
-    public List<Notification> read() throws SQLException {
+    public List<Notification> readAll() throws SQLException {
         List<Notification> notifications = NotificationCRUD.read();
         return notifications;
     }
@@ -73,18 +70,20 @@ public class NotificationService implements DatabaseConstants {
     public boolean checkEventAndgenerateNotification(NotificationInput input) throws FileNotFoundException, SQLException, IOException {
         String chaine = readFileToString();
         Gson gson = new Gson();
-        Type type = new TypeToken<List<NotificationGn>>() {
-        }.getType();
+        Type type = new TypeToken<List<NotificationGn>>(){}.getType();
         List<NotificationGn> notificationgns = gson.fromJson(chaine, type);
 
         for (NotificationGn notificationgn : notificationgns) {
-            if (notificationgn.getAction().equalsIgnoreCase(input.getAction()) && notificationgn.isGen_event()) {
+            //Si l'action de l'input est égale à l'une des actions du event dictionnary et
+            //si la génation est activer, on génére une notification
+            if (notificationgn.getAction().equalsIgnoreCase(input.getAction().toString()) && notificationgn.isGen_event()) {
+                //Construire l'objet notificztion
                 Notification notification = new Notification();
                 notification.setLibelle(notificationgn.getLibelle());
                 notification.setAction(notificationgn.getAction());
                 notification.setEntityId(input.getEntityId());
                 notification.setEntityType(input.getEntityType());
-				
+                
                 notification.setContenuGsm(getSmsMessage(input, notificationgn.getDiffusions().get(0).getMessage()));
                 notification.setContenuMail(getMailMessage(input, notificationgn.getDiffusions().get(1).getMessage()));
                 notification.setContenuMobileApp(getMobileMessage(input, notificationgn.getDiffusions().get(3).getMessage()));
@@ -97,14 +96,16 @@ public class NotificationService implements DatabaseConstants {
     }
 
     public String getSmsMessage(NotificationInput input, String baseMsg) throws SQLException {
-        String action = input.getAction().split("_")[0];
+        String action = input.getAction().toString().split("_")[0];
         String message = "";
-        if (action.equals("new") || action.equals("close")) {
-            message = baseMsg + input.getTitre();
+        String lien = web_path+"/"+input.getEntityType().toLowerCase()+"/"+input.getEntityId();
+        if (action.equalsIgnoreCase("NEW") || action.equalsIgnoreCase("CLOSE")) {
+            message = baseMsg + input.getTitre() + "\n" + lien;
         }
 
-        if (action.equals("update")) {
-            message = baseMsg + input.getTitre() + " de " + input.getLastVersion() + " a " + input.getCurrentVersion();
+        if (action.equalsIgnoreCase("UPDATE")) {
+            //message = baseMsg + input.getTitre() + " de " + input.getLastVersion() + " a " + input.getCurrentVersion() + "\n" +lien;
+            message = baseMsg + input.getTitre() + ". Le projet est passé à " + input.getCurrentVersion() + "\n" +lien;
         }
 
         return message;
@@ -112,26 +113,29 @@ public class NotificationService implements DatabaseConstants {
 
     public String getMailMessage(NotificationInput input, String baseMsg) throws SQLException {
         String message = "";
-        String action = input.getAction().split("_")[0];
-        if (action.equals("new") || action.equals("close")) {
-            message = baseMsg + input.getTitre();
+        String action = input.getAction().toString().split("_")[0];
+        String lien = web_path+"/"+input.getEntityType().toLowerCase()+"/"+input.getEntityId();
+        if (action.equalsIgnoreCase("new") || action.equalsIgnoreCase("close")) {
+            message = baseMsg + input.getTitre() + "\n" +lien;
         }
 
-        if (action.equals("update")) {
+        if (action.equalsIgnoreCase("update")) {
+//            message = baseMsg + input.getTitre() + "\n Ancienne Valeur de " + input.getAttributName() + ": " + input.getLastVersion()
+//                    + "\n Nouvelle Valeur de " + input.getAttributName() + ": " + input.getCurrentVersion() + "\n" + lien;
             message = baseMsg + input.getTitre() + "\n Ancienne Valeur de " + input.getAttributName() + ": " + input.getLastVersion()
-                    + "\n Nouvelle Valeur de " + input.getAttributName() + ": " + input.getCurrentVersion();
+                    + "\n Nouvelle Valeur de " + input.getAttributName() + ": " + input.getCurrentVersion() + "\n" + lien;
         }
         return message;
     }
 
     public String getWebMessage(NotificationInput input, String baseMsg) throws SQLException {
         String message = "";
-        String action = input.getAction().split("_")[0];
-        if (action.equals("new") || action.equals("close")) {
+        String action = input.getAction().toString().split("_")[0];
+        if (action.equalsIgnoreCase("new") || action.equalsIgnoreCase("close")) {
             message = baseMsg + input.getTitre();
         }
 
-        if (action.equals("update")) {
+        if (action.equalsIgnoreCase("update")) {
             message = baseMsg + input.getTitre() + "\n Ancienne Valeur de " + input.getAttributName() + ": " + input.getLastVersion()
                     + "\n Nouvelle Valeur de " + input.getAttributName() + ": " + input.getCurrentVersion();
         }
@@ -139,13 +143,13 @@ public class NotificationService implements DatabaseConstants {
     }
 
     public String getMobileMessage(NotificationInput input, String baseMsg) throws SQLException {
-        String action = input.getAction().split("_")[0];
+        String action = input.getAction().toString().split("_")[0];
         String message = "";
-        if (action.equals("new") || action.equals("close")) {
+        if (action.equalsIgnoreCase("new") || action.equalsIgnoreCase("close")) {
             message = baseMsg + input.getTitre();
         }
 
-        if (action.equals("update")) {
+        if (action.equalsIgnoreCase("update")) {
             message = baseMsg + input.getTitre() + " de " + input.getLastVersion() + " a " + input.getCurrentVersion();
         }
 
@@ -171,10 +175,4 @@ public class NotificationService implements DatabaseConstants {
         String returnStr = fileData.toString();
         return returnStr;
     }
-    
-//    public static void senderTimer(){
-//        Timer timer;
-//        timer = new Timer();
-//        timer.schedule(new SenderTask(), 1000, 5000);   
-// }
 }

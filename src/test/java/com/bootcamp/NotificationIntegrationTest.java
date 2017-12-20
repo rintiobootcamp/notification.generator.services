@@ -3,12 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.bootcamp.enums;
+package com.bootcamp;
 
 /**
  *
- * @author edwigegédéon
+ * @author Bello
  */
-public enum Action {
+public class NotificationIntegrationTest {
     
 }

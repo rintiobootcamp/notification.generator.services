@@ -1,8 +1,8 @@
-package com.bootcamp.Generator.controllers;
+package com.bootcamp.controllers;
 
-import com.bootcamp.Generator.Classes.NotificationInput;
+import com.bootcamp.classes.NotificationInput;
 import com.bootcamp.entities.Notification;
-import com.bootcamp.Generator.services.NotificationService;
+import com.bootcamp.services.NotificationService;
 import com.bootcamp.version.ApiVersions;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -31,7 +31,7 @@ public class NotificationController {
     @RequestMapping(method = RequestMethod.POST)
     @ApiVersions({"1.0"})
     @ApiOperation(value = "Create a new notification", notes = "Create a new notification")
-    public ResponseEntity<Boolean> checkEventAndgenerateNotification(NotificationInput input) throws FileNotFoundException, IOException, IOException {
+    public ResponseEntity<Boolean> checkEventAndgenerateNotification(@RequestBody NotificationInput input) throws FileNotFoundException, IOException, IOException {
         boolean result = false;
         HttpStatus httpStatus = null;
         
@@ -107,7 +107,7 @@ public class NotificationController {
         HttpStatus httpStatus = null;
 
         try {
-            notifications = notificationService.read();
+            notifications = notificationService.readAll();
             httpStatus = HttpStatus.OK;
         }catch (SQLException e){           
             httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;

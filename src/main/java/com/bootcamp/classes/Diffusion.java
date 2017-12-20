@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.bootcamp.Generator.Classes;
+package com.bootcamp.classes;
 
-import com.bootcamp.enums.CanalType;
+import com.bootcamp.commons.enums.CanalType;
 
 /**
  *

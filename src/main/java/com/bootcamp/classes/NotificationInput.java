@@ -3,7 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.bootcamp.Generator.Classes;
+package com.bootcamp.classes;
+
+import com.bootcamp.commons.enums.Action;
 
 /**
  *
@@ -13,7 +15,7 @@ public class NotificationInput {
     private String titre;
     private int entityId;
     private String entityType;
-    private String action;
+    private Action action;
     private String attributName;
     private String lastVersion;
     private String currentVersion;
@@ -34,8 +36,6 @@ public class NotificationInput {
         this.titre = titre;
     }
 
-    
-
     public String getEntityType() {
         return entityType;
     }
@@ -44,11 +44,11 @@ public class NotificationInput {
         this.entityType = entityType;
     }
 
-    public String getAction() {
+    public Action getAction() {
         return action;
     }
 
-    public void setAction(String action) {
+    public void setAction(Action action) {
         this.action = action;
     }
 

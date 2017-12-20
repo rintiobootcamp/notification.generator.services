@@ -1,0 +1,19 @@
+[
+    {
+        "id": 1,
+        "action": "UPDATE_PROJECT_ETAT",
+        "attributName": "etat",
+        "lastVersion": "EXECUTION",
+        "currentVersion": "SUSPENDU",
+        "entityId": 5,
+        "entityType": "PROJET",
+        "titre": "Mise à jour de l'etat"
+    },
+	{
+        "id": 2,
+        "action": "NEW_SONDAGE",
+        "entityId": 5,
+        "entityType": "PROJET",
+        "libelle": "Création d'un nouveau sondage"
+    }
+]

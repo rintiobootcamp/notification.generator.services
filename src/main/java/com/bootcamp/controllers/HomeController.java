@@ -2,7 +2,7 @@
  * Created by Bignon on 7/12/17.
  */
 
-package com.bootcamp.Generator.controllers;
+package com.bootcamp.controllers;
 
 
 import org.springframework.stereotype.Controller;

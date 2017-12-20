@@ -1,0 +1,37 @@
+[
+    {
+        "id": 1,
+        "action": "UPDATE_PROJECT_ETAT",
+        "contenuGsm": "Le message Sms",
+        "contenuWebApp": "Le message Web app",
+        "contenuMobileApp": "Le message Mobil app",
+        "contenuMail": "Le message Mail",
+        "entityId": 5,
+        "entityType": "PROJET",
+        "libelle": "Mise à jour de l'état",
+        "dateCreation": 1234567,
+        "dateMiseAJour": 1234567,
+        "sendSms": false,
+        "sendMail": false,
+        "sendWebApp": false,
+        "sendMobil": false
+        
+    },
+    {
+        "id": 2,
+        "action": "UPDATE_PROJECT_PHASE",
+        "contenuGsm": "Le message Sms",
+        "contenuWebApp": "Le message Web app",
+        "contenuMobileApp": "Le message Mobil app",
+        "contenuMail": "Le message Mail",
+        "entityId": 5,
+        "entityType": "PROJET",
+        "libelle": "Mise à jour de la phase",
+        "dateCreation": 1234567,
+        "dateMiseAJour": 1234567,
+        "sendSms": false,
+        "sendMail": false,
+        "sendWebApp": false,
+        "sendMobil": false
+    }
+]
