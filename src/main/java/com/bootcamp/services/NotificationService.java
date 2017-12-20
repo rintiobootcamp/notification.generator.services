@@ -1,12 +1,15 @@
 package com.bootcamp.services;
 
+import com.bootcamp.classes.MessageApp;
 import com.bootcamp.classes.NotificationGn;
 import com.bootcamp.commons.ws.usecases.pivotone.NotificationInput;
 import com.bootcamp.commons.constants.DatabaseConstants;
 import com.bootcamp.commons.models.Criteria;
 import com.bootcamp.commons.models.Criterias;
 import com.bootcamp.crud.NotificationCRUD;
+import com.bootcamp.crud.PagUserCRUD;
 import com.bootcamp.entities.Notification;
+import com.bootcamp.sender.SenderService;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import java.io.BufferedReader;
@@ -18,6 +21,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.beans.factory.annotation.Value;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,12 +29,10 @@ import java.util.List;
  */
 @Component
 public class NotificationService implements DatabaseConstants {
-    
-    SenderService senderService;
 
     @Value("${event_dictionnary_path}")
     private String eventDictionnary;
-    
+
     @Value("${client_web_base_path}")
     String web_path;
 
@@ -68,17 +70,26 @@ public class NotificationService implements DatabaseConstants {
         return notifications;
     }
 
+    public List<MessageApp> getAppMessage(String mailUser, int size, long date) throws SQLException {
+        List<MessageApp> messages = new ArrayList<MessageApp>();
+        
+        Criterias criterias = new Criterias();
+        criterias.addCriteria(new Criteria("email", "=", mailUser));
+        int iduser = PagUserCRUD.read(criterias).get(0).getId();
+        
+        return messages;
+    }
+
     public boolean checkEventAndgenerateNotification(NotificationInput input) throws FileNotFoundException, SQLException, IOException {
         String chaine = readFileToString();
         Gson gson = new Gson();
-        Type type = new TypeToken<List<NotificationGn>>(){}.getType();
+        Type type = new TypeToken<List<NotificationGn>>() {
+        }.getType();
         List<NotificationGn> notificationgns = gson.fromJson(chaine, type);
 
         for (NotificationGn notificationgn : notificationgns) {
             //Si l'action de l'input est égale à l'une des actions du event dictionnary et
             //si la génation est activer, on génére une notification
-            System.out.println( notificationgn.getAction() );
-            System.out.println( input.getAction().toString() );
             if (notificationgn.getAction().equalsIgnoreCase(input.getAction().toString()) && notificationgn.isGen_event()) {
                 //Construire l'objet notificztion
                 Notification notification = new Notification();
@@ -90,8 +101,11 @@ public class NotificationService implements DatabaseConstants {
                 notification.setContenuMail(getMailMessage(input, notificationgn.getDiffusions().get(1).getMessage()));
                 notification.setContenuMobileApp(getMobileMessage(input, notificationgn.getDiffusions().get(3).getMessage()));
                 notification.setContenuWebApp(getWebMessage(input, notificationgn.getDiffusions().get(2).getMessage()));
-                this.create(notification);
-                senderService.sendNotification(notification);
+                notification = this.create(notification);
+
+                System.out.println(notification.getAction());
+                boolean bool = SenderService.sendNotification(notification);
+                System.out.println(bool);
                 return true;
             }
         }
@@ -101,25 +115,25 @@ public class NotificationService implements DatabaseConstants {
     public String getSmsMessage(NotificationInput input, String baseMsg) throws SQLException {
         String action = input.getAction().toString().split("_")[0];
         String message = "";
-        String lien = web_path+"/"+input.getEntityType().toLowerCase()+"/"+input.getEntityId();
+        String lien = web_path + "/" + input.getEntityType().toLowerCase() + "/" + input.getEntityId();
         if (action.equalsIgnoreCase("NEW") || action.equalsIgnoreCase("CLOSE")) {
             message = baseMsg + input.getTitre() + "\n" + lien;
         }
 
         if (action.equalsIgnoreCase("UPDATE")) {
             //message = baseMsg + input.getTitre() + " de " + input.getLastVersion() + " a " + input.getCurrentVersion() + "\n" +lien;
-            message = baseMsg + input.getTitre() + ". Le projet est passé à " + input.getCurrentVersion() + "\n" +lien;
+            message = baseMsg + input.getTitre() + ". Le projet est passé à " + input.getCurrentVersion() + "\n" + lien;
         }
 
         return message;
     }
-
+    
     public String getMailMessage(NotificationInput input, String baseMsg) throws SQLException {
         String message = "";
         String action = input.getAction().toString().split("_")[0];
-        String lien = web_path+"/"+input.getEntityType().toLowerCase()+"/"+input.getEntityId();
+        String lien = web_path + "/" + input.getEntityType().toLowerCase() + "/" + input.getEntityId();
         if (action.equalsIgnoreCase("new") || action.equalsIgnoreCase("close")) {
-            message = baseMsg + input.getTitre() + "\n" +lien;
+            message = baseMsg + input.getTitre() + "\n" + lien;
         }
 
         if (action.equalsIgnoreCase("update")) {
@@ -159,7 +173,7 @@ public class NotificationService implements DatabaseConstants {
         return message;
     }
 
-    public String readFileToString() throws IOException {
+    private String readFileToString() throws IOException {
         String filePath = eventDictionnary;
         StringBuilder fileData = new StringBuilder(1000);//Constructs a string buffer with no characters in it and the specified initial capacity
         BufferedReader reader = new BufferedReader(new FileReader(filePath));
