@@ -1,6 +1,6 @@
 package com.bootcamp.controllers;
 
-import com.bootcamp.classes.NotificationInput;
+import com.bootcamp.commons.ws.usecases.pivotone.NotificationInput;
 import com.bootcamp.entities.Notification;
 import com.bootcamp.services.NotificationService;
 import com.bootcamp.version.ApiVersions;

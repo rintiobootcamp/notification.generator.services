@@ -1,7 +1,7 @@
 package com.bootcamp.services;
 
 import com.bootcamp.classes.NotificationGn;
-import com.bootcamp.classes.NotificationInput;
+import com.bootcamp.commons.ws.usecases.pivotone.NotificationInput;
 import com.bootcamp.commons.constants.DatabaseConstants;
 import com.bootcamp.commons.models.Criteria;
 import com.bootcamp.commons.models.Criterias;
@@ -25,6 +25,8 @@ import java.util.List;
  */
 @Component
 public class NotificationService implements DatabaseConstants {
+    
+    SenderService senderService;
 
     @Value("${event.dictionnary.path}")
     String eventDictionnary;
@@ -89,6 +91,7 @@ public class NotificationService implements DatabaseConstants {
                 notification.setContenuMobileApp(getMobileMessage(input, notificationgn.getDiffusions().get(3).getMessage()));
                 notification.setContenuWebApp(getWebMessage(input, notificationgn.getDiffusions().get(2).getMessage()));
                 this.create(notification);
+                senderService.sendNotification(notification);
                 return true;
             }
         }
