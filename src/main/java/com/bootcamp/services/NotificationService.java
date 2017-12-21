@@ -8,7 +8,9 @@ import com.bootcamp.commons.models.Criteria;
 import com.bootcamp.commons.models.Criterias;
 import com.bootcamp.crud.NotificationCRUD;
 import com.bootcamp.crud.PagUserCRUD;
+import com.bootcamp.crud.PreferenceCRUD;
 import com.bootcamp.entities.Notification;
+import com.bootcamp.entities.Preference;
 import com.bootcamp.sender.SenderService;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -69,15 +71,59 @@ public class NotificationService implements DatabaseConstants {
         List<Notification> notifications = NotificationCRUD.read();
         return notifications;
     }
+    
+    public MessageApp buildMessage (Notification norification) {
+        MessageApp msg = new MessageApp();
+        msg.setTitre(norification.getLibelle());
+        msg.setContenu(norification.getContenuMobileApp());
+        msg.setDateCreation(norification.getDateCreation());
+        return msg;
+    }
 
     public List<MessageApp> getAppMessage(String mailUser, int size, long date) throws SQLException {
         List<MessageApp> messages = new ArrayList<MessageApp>();
-        
-        Criterias criterias = new Criterias();
-        criterias.addCriteria(new Criteria("email", "=", mailUser));
-        int iduser = PagUserCRUD.read(criterias).get(0).getId();
-        
-        return messages;
+        MessageApp msg = new MessageApp();
+        msg.setTitre("Aucun message");
+        msg.setContenu("Aucune notification depuis votre dernière connection");
+        msg.setDateCreation(System.currentTimeMillis());
+
+        Criterias criterias1 = new Criterias();
+        criterias1.addCriteria(new Criteria("email", "=", mailUser));
+        int iduser = PagUserCRUD.read(criterias1).get(0).getId();
+
+        Criterias criterias2 = new Criterias();
+        criterias2.addCriteria(new Criteria("userId", "=", iduser));
+        List<Preference> preferences = PreferenceCRUD.read(criterias2);
+
+        if (preferences.isEmpty()) {
+            messages.add(msg);
+            return messages;
+        } else {
+            Criterias criterias3 = new Criterias();
+            int i = 0;
+            for (Preference preference : preferences) {
+                i++;
+                criterias2.addCriteria(new Criteria("entityId", "=", preference.getEntityId(), "AND"));
+                criterias2.addCriteria(new Criteria("entityType", "=", preference.getEntityType(), "AND"));
+
+                if (i == preferences.size()) {
+                    criterias2.addCriteria(new Criteria("dateCreation", "=", preference.getDateCreation()));
+                } else {
+                    criterias2.addCriteria(new Criteria("dateCreation", "=", preference.getDateCreation(), "OR"));
+                }
+            }
+
+            List<Notification> notifications = NotificationCRUD.read(criterias3,0, size);
+            if (notifications.isEmpty()) {
+                messages.add(msg);
+                return messages;
+            }else {
+                for (Notification notification : notifications) {
+                    messages.add(this.buildMessage(notification));
+                }
+                return messages;
+            }
+        }
     }
 
     public boolean checkEventAndgenerateNotification(NotificationInput input) throws FileNotFoundException, SQLException, IOException {
@@ -127,7 +173,7 @@ public class NotificationService implements DatabaseConstants {
 
         return message;
     }
-    
+
     public String getMailMessage(NotificationInput input, String baseMsg) throws SQLException {
         String message = "";
         String action = input.getAction().toString().split("_")[0];
