@@ -1,5 +1,6 @@
 package com.bootcamp.controllers;
 
+import com.bootcamp.classes.MessageApp;
 import com.bootcamp.commons.ws.usecases.pivotone.NotificationInput;
 import com.bootcamp.entities.Notification;
 import com.bootcamp.services.NotificationService;
@@ -19,12 +20,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-
 @RestController("NotificationController")
 @RequestMapping("/notifications")
 @Api(value = "Notification API", description = "Notification API")
 public class NotificationController {
-    
+
     @Autowired
     NotificationService notificationService;
 
@@ -34,17 +34,17 @@ public class NotificationController {
     public ResponseEntity<Boolean> checkEventAndgenerateNotification(@RequestBody NotificationInput input) throws FileNotFoundException, IOException, IOException {
         boolean result = false;
         HttpStatus httpStatus = null;
-        
+
         try {
             result = notificationService.checkEventAndgenerateNotification(input);
             httpStatus = HttpStatus.OK;
-        }catch (SQLException exception){
+        } catch (SQLException exception) {
             httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
         }
 
         return new ResponseEntity<>(result, httpStatus);
     }
-    
+
     @RequestMapping(method = RequestMethod.PUT)
     @ApiVersions({"1.0"})
     @ApiOperation(value = "Update a new notification", notes = "Update a new notification")
@@ -55,8 +55,8 @@ public class NotificationController {
         try {
             notificationService.update(notification);
             httpStatus = HttpStatus.OK;
-        }catch (SQLException exception){
-            
+        } catch (SQLException exception) {
+
             httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
         }
 
@@ -66,10 +66,10 @@ public class NotificationController {
     @RequestMapping(method = RequestMethod.DELETE, value = "/{id}")
     @ApiVersions({"1.0"})
     @ApiOperation(value = "Delete a notification", notes = "Delete a notification")
-    public ResponseEntity<Boolean> delete(@PathVariable(name = "id") int id) throws Exception{
+    public ResponseEntity<Boolean> delete(@PathVariable(name = "id") int id) throws Exception {
 
-      boolean done = notificationService.delete( id );
-      return new ResponseEntity<Boolean>( done,HttpStatus.OK );
+        boolean done = notificationService.delete(id);
+        return new ResponseEntity<Boolean>(done, HttpStatus.OK);
 
     }
 
@@ -83,8 +83,8 @@ public class NotificationController {
         try {
             notification = notificationService.read(id);
             httpStatus = HttpStatus.OK;
-        }catch (SQLException exception){
-            
+        } catch (SQLException exception) {
+
             httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
         }
 
@@ -102,11 +102,28 @@ public class NotificationController {
         try {
             notifications = notificationService.readAll();
             httpStatus = HttpStatus.OK;
-        }catch (SQLException e){           
+        } catch (SQLException e) {
             httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
         }
 
         return new ResponseEntity<List<Notification>>(notifications, httpStatus);
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value="/messages")
+    @ApiVersions({"1.0"})
+    @ApiOperation(value = "Get all notifications to user app", notes = "Get all notifications to user app")
+    public ResponseEntity<List<MessageApp>> getMessagesApp(@RequestParam("date") long date, @RequestParam("email") String email, @RequestParam("size") int size) {
+        List<MessageApp> messages = new ArrayList<MessageApp>();
+        HttpStatus httpStatus = null;
+
+        try {
+            messages = notificationService.getAppMessage(email, size, date);
+            httpStatus = HttpStatus.OK;
+        } catch (SQLException e) {
+            httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+
+        return new ResponseEntity<>(messages, httpStatus);
     }
 
 }

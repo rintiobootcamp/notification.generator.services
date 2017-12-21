@@ -19,6 +19,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.nio.charset.Charset;
 import org.springframework.stereotype.Component;
 import org.springframework.beans.factory.annotation.Value;
 
@@ -39,6 +40,8 @@ public class NotificationService implements DatabaseConstants {
     String web_path;
 
     public Notification create(Notification notification) throws SQLException {
+        Charset cs = Charset.forName("Shift_JIS");
+        
         notification.setDateCreation(System.currentTimeMillis());
         notification.setDateMiseAJour(System.currentTimeMillis());
         notification.setSendMail(false);
@@ -71,8 +74,8 @@ public class NotificationService implements DatabaseConstants {
         List<Notification> notifications = NotificationCRUD.read();
         return notifications;
     }
-    
-    public MessageApp buildMessage (Notification norification) {
+
+    public MessageApp buildMessage(Notification norification) {
         MessageApp msg = new MessageApp();
         msg.setTitre(norification.getLibelle());
         msg.setContenu(norification.getContenuMobileApp());
@@ -87,42 +90,18 @@ public class NotificationService implements DatabaseConstants {
         msg.setContenu("Aucune notification depuis votre dernière connection");
         msg.setDateCreation(System.currentTimeMillis());
 
-        Criterias criterias1 = new Criterias();
-        criterias1.addCriteria(new Criteria("email", "=", mailUser));
-        int iduser = PagUserCRUD.read(criterias1).get(0).getId();
+        Criterias criterias = new Criterias();
+        criterias.addCriteria(new Criteria("dateCreation", ">", date));
+        List<Notification> notifications = NotificationCRUD.read(criterias, 0, size);
 
-        Criterias criterias2 = new Criterias();
-        criterias2.addCriteria(new Criteria("userId", "=", iduser));
-        List<Preference> preferences = PreferenceCRUD.read(criterias2);
-
-        if (preferences.isEmpty()) {
+        if (notifications.isEmpty()) {
             messages.add(msg);
             return messages;
         } else {
-            Criterias criterias3 = new Criterias();
-            int i = 0;
-            for (Preference preference : preferences) {
-                i++;
-                criterias2.addCriteria(new Criteria("entityId", "=", preference.getEntityId(), "AND"));
-                criterias2.addCriteria(new Criteria("entityType", "=", preference.getEntityType(), "AND"));
-
-                if (i == preferences.size()) {
-                    criterias2.addCriteria(new Criteria("dateCreation", "=", preference.getDateCreation()));
-                } else {
-                    criterias2.addCriteria(new Criteria("dateCreation", "=", preference.getDateCreation(), "OR"));
-                }
+            for (Notification notification : notifications) {
+                messages.add(this.buildMessage(notification));
             }
-
-            List<Notification> notifications = NotificationCRUD.read(criterias3,0, size);
-            if (notifications.isEmpty()) {
-                messages.add(msg);
-                return messages;
-            }else {
-                for (Notification notification : notifications) {
-                    messages.add(this.buildMessage(notification));
-                }
-                return messages;
-            }
+            return messages;
         }
     }
 
@@ -185,8 +164,7 @@ public class NotificationService implements DatabaseConstants {
         if (action.equalsIgnoreCase("update")) {
 //            message = baseMsg + input.getTitre() + "\n Ancienne Valeur de " + input.getAttributName() + ": " + input.getLastVersion()
 //                    + "\n Nouvelle Valeur de " + input.getAttributName() + ": " + input.getCurrentVersion() + "\n" + lien;
-            message = baseMsg + input.getTitre() + "\n Ancienne Valeur de " + input.getAttributName() + ": " + input.getLastVersion()
-                    + "\n Nouvelle Valeur de " + input.getAttributName() + ": " + input.getCurrentVersion() + "\n" + lien;
+            message = baseMsg + input.getTitre() + ". Le projet est passé à " + input.getCurrentVersion() + "\n" + lien;
         }
         return message;
     }
@@ -194,28 +172,30 @@ public class NotificationService implements DatabaseConstants {
     public String getWebMessage(NotificationInput input, String baseMsg) throws SQLException {
         String message = "";
         String action = input.getAction().toString().split("_")[0];
+        String lien = web_path + "/" + input.getEntityType().toLowerCase() + "/" + input.getEntityId();
         if (action.equalsIgnoreCase("new") || action.equalsIgnoreCase("close")) {
-            message = baseMsg + input.getTitre();
+            message = baseMsg + input.getTitre() + "\n" + lien;
         }
 
         if (action.equalsIgnoreCase("update")) {
-            message = baseMsg + input.getTitre() + "\n Ancienne Valeur de " + input.getAttributName() + ": " + input.getLastVersion()
-                    + "\n Nouvelle Valeur de " + input.getAttributName() + ": " + input.getCurrentVersion();
+            message = baseMsg + input.getTitre() + ". Le projet est passé à " + input.getCurrentVersion() + "\n" + lien;
         }
+        
         return message;
     }
 
     public String getMobileMessage(NotificationInput input, String baseMsg) throws SQLException {
-        String action = input.getAction().toString().split("_")[0];
         String message = "";
+        String action = input.getAction().toString().split("_")[0];
+        String lien = web_path + "/" + input.getEntityType().toLowerCase() + "/" + input.getEntityId();
         if (action.equalsIgnoreCase("new") || action.equalsIgnoreCase("close")) {
-            message = baseMsg + input.getTitre();
+            message = baseMsg + input.getTitre() + "\n" + lien;
         }
 
         if (action.equalsIgnoreCase("update")) {
-            message = baseMsg + input.getTitre() + " de " + input.getLastVersion() + " a " + input.getCurrentVersion();
+            message = baseMsg + input.getTitre() + ". Le projet est passé à " + input.getCurrentVersion() + "\n" + lien;
         }
-
+        
         return message;
     }
 
@@ -237,4 +217,50 @@ public class NotificationService implements DatabaseConstants {
         String returnStr = fileData.toString();
         return returnStr;
     }
+
+//    public List<MessageApp> getAppMessage(String mailUser, int size, long date) throws SQLException {
+//        List<MessageApp> messages = new ArrayList<MessageApp>();
+//        MessageApp msg = new MessageApp();
+//        msg.setTitre("Aucun message");
+//        msg.setContenu("Aucune notification depuis votre dernière connection");
+//        msg.setDateCreation(System.currentTimeMillis());
+//
+//        Criterias criterias1 = new Criterias();
+//        criterias1.addCriteria(new Criteria("email", "=", mailUser));
+//        int iduser = PagUserCRUD.read(criterias1).get(0).getId();
+//
+//        Criterias criterias2 = new Criterias();
+//        criterias2.addCriteria(new Criteria("userId", "=", iduser));
+//        List<Preference> preferences = PreferenceCRUD.read(criterias2);
+//
+//        if (preferences.isEmpty()) {
+//            messages.add(msg);
+//            return messages;
+//        } else {
+//            Criterias criterias3 = new Criterias();
+//            int i = 0;
+//            for (Preference preference : preferences) {
+//                i++;
+//                criterias2.addCriteria(new Criteria("entityId", "=", preference.getEntityId(), "AND"));
+//                criterias2.addCriteria(new Criteria("entityType", "=", preference.getEntityType(), "AND"));
+//
+//                if (i == preferences.size()) {
+//                    criterias2.addCriteria(new Criteria("dateCreation", "=", preference.getDateCreation()));
+//                } else {
+//                    criterias2.addCriteria(new Criteria("dateCreation", "=", preference.getDateCreation(), "OR"));
+//                }
+//            }
+//
+//            List<Notification> notifications = NotificationCRUD.read(criterias3,0, size);
+//            if (notifications.isEmpty()) {
+//                messages.add(msg);
+//                return messages;
+//            }else {
+//                for (Notification notification : notifications) {
+//                    messages.add(this.buildMessage(notification));
+//                }
+//                return messages;
+//            }
+//        }
+//    }
 }
