@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.bootcamp.Generator.Classes;
+package com.bootcamp.classes;
 
 import java.util.List;
 
@@ -15,7 +15,6 @@ public class NotificationGn {
    private String libelle;
    private String action;
    private boolean gen_event; 
-   
    private List<Diffusion> diffusions;
 
     public String getLibelle() {

@@ -1,0 +1,22 @@
+[
+    {
+        "id": 1,
+        "action": "UPDATE_PROJECT_PHASE",
+        "attributName": "etat",
+        "lastVersion": "EXECUTION",
+        "currentVersion": "SUSPENDU",
+        "entityId": 5,
+        "entityType": "PROJET",
+        "titre": "mise a jour du projet"
+    },
+    {
+        "id": 2,
+        "action": "NEW_PROJET",
+        "attributName": "etat",
+        "lastVersion": "EXECUTION",
+        "currentVersion": "SUSPENDU",
+        "entityId": 1,
+        "entityType": "PROJET",
+        "titre": "Mise à jour de l'etat"
+    }
+]
