@@ -50,7 +50,7 @@ public class NotificationIntegrationTest {
      * The Base URI of notification fonctionnal service,
      * it can be change with the online URI of this service.
      */
-    private String BASE_URI = "http://localhost:8092/notification";
+    private String BASE_URI = "http://localhost:8093/notification";
 
     /**
      * The path of the Notification controller, according to this controller implementation
