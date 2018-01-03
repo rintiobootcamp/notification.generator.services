@@ -8,6 +8,8 @@ import com.bootcamp.crud.PreferenceCRUD;
 import com.bootcamp.entities.Notification;
 import com.bootcamp.entities.PagUser;
 import com.bootcamp.entities.Preference;
+import com.bootcamp.services.NotificationService;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -81,7 +83,8 @@ public class SenderService {
             String destinatairesNumeros = SenderService.getNumeroList(users);
 
             try {
-                MailSender.sendMail(notification.getContenuMail(), destinatairesMail);
+                NotificationService notificationService = new NotificationService();
+                notificationService.sendMail(notification.getContenuMail(), destinatairesMail);
             } catch (MessagingException ex) {
                 Logger.getLogger(SenderService.class.getName()).log(Level.SEVERE, null, ex);
             }

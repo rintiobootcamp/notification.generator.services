@@ -23,9 +23,17 @@ import java.nio.charset.Charset;
 import org.springframework.stereotype.Component;
 import org.springframework.beans.factory.annotation.Value;
 
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 /**
  * Created by Bignon on 11/27/17.
@@ -38,6 +46,27 @@ public class NotificationService implements DatabaseConstants {
 
     @Value("${client_web_base_path}")
     String web_path;
+
+    @Value("${mail.username}")
+    private String USER_NAME;
+
+    @Value("${mail.port}")
+    private String port;
+
+    @Value("${mail.password}")
+    private String PASSWORD;
+
+    @Value("${mail.host}")
+    private String host;
+
+    public String returnInfos(){
+        return "eventDictionnary: "+eventDictionnary+"\n"+
+                "web_path: "+web_path+"\n"+
+                "USER_NAME: "+USER_NAME+"\n"+
+                "port: "+port+"\n"
+                ;
+
+    }
 
     public Notification create(Notification notification) throws SQLException {
         Charset cs = Charset.forName("Shift_JIS");
@@ -263,4 +292,47 @@ public class NotificationService implements DatabaseConstants {
 //            }
 //        }
 //    }
-}
+
+    // mail  sender
+    public void sendMail(String messageMail, String[] destinataires) throws MessagingException {
+
+        System.setProperty("https.protocols", "TLSv1.1");
+        Properties props = System.getProperties();
+        props.put("mail.smtp.starttls.enable", "true");
+        props.put("mail.smtp.user", USER_NAME);
+        props.put("mail.smtp.host", host);
+        props.put("mail.smtp.password", PASSWORD);
+        props.put("mail.smtp.port", port);
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.ssl.trust", host);
+
+        Session session = Session.getDefaultInstance(props);
+        MimeMessage message = new MimeMessage(session);
+
+        try {
+            message.setFrom(new InternetAddress(USER_NAME));
+            InternetAddress[] toAddress = new InternetAddress[destinataires.length];
+
+            // To get the array of addresses
+            for (int i = 0; i < destinataires.length; i++) {
+                toAddress[i] = new InternetAddress(destinataires[i]);
+            }
+
+            for (int i = 0; i < toAddress.length; i++) {
+                message.addRecipient(Message.RecipientType.TO, toAddress[i]);
+            }
+
+            message.setSubject("Notification de la Plateforme monPAG");
+            message.setText(messageMail);
+            Transport transport = session.getTransport("smtp");
+            transport.connect(host, USER_NAME, PASSWORD);
+            transport.sendMessage(message, message.getAllRecipients());
+            transport.close();
+        } catch (AddressException ae) {
+            ae.printStackTrace();
+        } catch (MessagingException me) {
+            me.printStackTrace();
+        }
+    }
+    }
+
