@@ -19,6 +19,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.nio.ByteBuffer;
+import java.nio.CharBuffer;
 import java.nio.charset.Charset;
 import org.springframework.stereotype.Component;
 import org.springframework.beans.factory.annotation.Value;
@@ -40,8 +42,6 @@ public class NotificationService implements DatabaseConstants {
     String web_path;
 
     public Notification create(Notification notification) throws SQLException {
-        Charset cs = Charset.forName("Shift_JIS");
-        
         notification.setDateCreation(System.currentTimeMillis());
         notification.setDateMiseAJour(System.currentTimeMillis());
         notification.setSendMail(false);
@@ -118,7 +118,7 @@ public class NotificationService implements DatabaseConstants {
             if (notificationgn.getAction().equalsIgnoreCase(input.getAction().toString()) && notificationgn.isGen_event()) {
                 //Construire l'objet notificztion
                 Notification notification = new Notification();
-                notification.setLibelle(notificationgn.getLibelle());
+                notification.setLibelle(this.encodeString(notificationgn.getLibelle()));
                 notification.setAction(notificationgn.getAction());
                 notification.setEntityId(input.getEntityId());
                 notification.setEntityType(input.getEntityType());
@@ -140,14 +140,15 @@ public class NotificationService implements DatabaseConstants {
     public String getSmsMessage(NotificationInput input, String baseMsg) throws SQLException {
         String action = input.getAction().toString().split("_")[0];
         String message = "";
+        baseMsg = this.encodeString(baseMsg);
+        String corps = ". Le projet est passé à ";
         String lien = web_path + "/" + input.getEntityType().toLowerCase() + "/" + input.getEntityId();
         if (action.equalsIgnoreCase("NEW") || action.equalsIgnoreCase("CLOSE")) {
-            message = baseMsg + input.getTitre() + "\n" + lien;
+            message = baseMsg + "\"" + input.getTitre() + "\"" + "\n" + lien;
         }
 
         if (action.equalsIgnoreCase("UPDATE")) {
-            //message = baseMsg + input.getTitre() + " de " + input.getLastVersion() + " a " + input.getCurrentVersion() + "\n" +lien;
-            message = baseMsg + input.getTitre() + ". Le projet est passé à " + input.getCurrentVersion() + "\n" + lien;
+            message = baseMsg + "\"" + input.getTitre() + "\"" + corps + input.getCurrentVersion() + "\n" + lien;
         }
 
         return message;
@@ -157,14 +158,14 @@ public class NotificationService implements DatabaseConstants {
         String message = "";
         String action = input.getAction().toString().split("_")[0];
         String lien = web_path + "/" + input.getEntityType().toLowerCase() + "/" + input.getEntityId();
+        baseMsg = this.encodeString(baseMsg);
+        String corps = ". Le projet est passé à ";
         if (action.equalsIgnoreCase("new") || action.equalsIgnoreCase("close")) {
-            message = baseMsg + input.getTitre() + "\n" + lien;
+            message = baseMsg + "\"" + input.getTitre() + "\"" + "\n" + lien;
         }
 
         if (action.equalsIgnoreCase("update")) {
-//            message = baseMsg + input.getTitre() + "\n Ancienne Valeur de " + input.getAttributName() + ": " + input.getLastVersion()
-//                    + "\n Nouvelle Valeur de " + input.getAttributName() + ": " + input.getCurrentVersion() + "\n" + lien;
-            message = baseMsg + input.getTitre() + ". Le projet est passé à " + input.getCurrentVersion() + "\n" + lien;
+            message = baseMsg + "\"" + input.getTitre() + "\"" + corps + input.getCurrentVersion() + "\n" + lien;
         }
         return message;
     }
@@ -173,14 +174,16 @@ public class NotificationService implements DatabaseConstants {
         String message = "";
         String action = input.getAction().toString().split("_")[0];
         String lien = web_path + "/" + input.getEntityType().toLowerCase() + "/" + input.getEntityId();
+        baseMsg = this.encodeString(baseMsg);
+        String corps = ". Le projet est passé à ";
         if (action.equalsIgnoreCase("new") || action.equalsIgnoreCase("close")) {
-            message = baseMsg + input.getTitre() + "\n" + lien;
+            message = baseMsg + "\"" + input.getTitre() + "\"" + "\n" + lien;
         }
 
         if (action.equalsIgnoreCase("update")) {
-            message = baseMsg + input.getTitre() + ". Le projet est passé à " + input.getCurrentVersion() + "\n" + lien;
+            message = baseMsg + "\"" + input.getTitre() + "\"" + corps + input.getCurrentVersion() + "\n" + lien;
         }
-        
+
         return message;
     }
 
@@ -188,14 +191,16 @@ public class NotificationService implements DatabaseConstants {
         String message = "";
         String action = input.getAction().toString().split("_")[0];
         String lien = web_path + "/" + input.getEntityType().toLowerCase() + "/" + input.getEntityId();
+        baseMsg = this.encodeString(baseMsg);
+        String corps = ". Le projet est passé à ";
         if (action.equalsIgnoreCase("new") || action.equalsIgnoreCase("close")) {
-            message = baseMsg + input.getTitre() + "\n" + lien;
+            message = baseMsg + "\"" + input.getTitre() + "\"\n" + lien;
         }
 
         if (action.equalsIgnoreCase("update")) {
-            message = baseMsg + input.getTitre() + ". Le projet est passé à " + input.getCurrentVersion() + "\n" + lien;
+            message = baseMsg + "\"" + input.getTitre() + "\"" + corps + input.getCurrentVersion() + "\n" + lien;
         }
-        
+
         return message;
     }
 
@@ -218,49 +223,19 @@ public class NotificationService implements DatabaseConstants {
         return returnStr;
     }
 
-//    public List<MessageApp> getAppMessage(String mailUser, int size, long date) throws SQLException {
-//        List<MessageApp> messages = new ArrayList<MessageApp>();
-//        MessageApp msg = new MessageApp();
-//        msg.setTitre("Aucun message");
-//        msg.setContenu("Aucune notification depuis votre dernière connection");
-//        msg.setDateCreation(System.currentTimeMillis());
+    private String encodeString(String message) {
+//        byte[] b = message.getBytes();
+//        Charset def = Charset.defaultCharset() ;
+//        Charset cs = Charset.forName("UTF-8");
+//        ByteBuffer bb = ByteBuffer.wrap( b );
+//        CharBuffer cb = cs.decode( bb );
+//        String s = cb.toString();
 //
-//        Criterias criterias1 = new Criterias();
-//        criterias1.addCriteria(new Criteria("email", "=", mailUser));
-//        int iduser = PagUserCRUD.read(criterias1).get(0).getId();
-//
-//        Criterias criterias2 = new Criterias();
-//        criterias2.addCriteria(new Criteria("userId", "=", iduser));
-//        List<Preference> preferences = PreferenceCRUD.read(criterias2);
-//
-//        if (preferences.isEmpty()) {
-//            messages.add(msg);
-//            return messages;
-//        } else {
-//            Criterias criterias3 = new Criterias();
-//            int i = 0;
-//            for (Preference preference : preferences) {
-//                i++;
-//                criterias2.addCriteria(new Criteria("entityId", "=", preference.getEntityId(), "AND"));
-//                criterias2.addCriteria(new Criteria("entityType", "=", preference.getEntityType(), "AND"));
-//
-//                if (i == preferences.size()) {
-//                    criterias2.addCriteria(new Criteria("dateCreation", "=", preference.getDateCreation()));
-//                } else {
-//                    criterias2.addCriteria(new Criteria("dateCreation", "=", preference.getDateCreation(), "OR"));
-//                }
-//            }
-//
-//            List<Notification> notifications = NotificationCRUD.read(criterias3,0, size);
-//            if (notifications.isEmpty()) {
-//                messages.add(msg);
-//                return messages;
-//            }else {
-//                for (Notification notification : notifications) {
-//                    messages.add(this.buildMessage(notification));
-//                }
-//                return messages;
-//            }
-//        }
-//    }
+//        return s;
+
+        String returnStr = new String(message.getBytes(),Charset.forName("UTF-8"));
+        return returnStr;
+
+        //return message;
+    }
 }
