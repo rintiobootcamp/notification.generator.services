@@ -18,19 +18,12 @@ public class OctoPushClient {
 
     public void sendSms(String sms, String recipients) throws IOException {
 
-        String uri= "https://www.octopush-dm.com/api/sms?user_login=unis.gnacadja@gmail.com&api_key=1kED1kgHphEztpX7iSoXnCf2V3YvRrL9&sms_text="+sms+"&sms_recipients="+recipients+"&sms_type=FR&sms_sender=Plateforme Mon PAG";
+        String uri= "https://www.octopush-dm.com/api/sms?user_login=unis.gnacadja@gmail.com&api_key=1kED1kgHphEztpX7iSoXnCf2V3YvRrL9&sms_text="+sms+"&sms_recipients="+recipients+"&sms_type=FR&sms_sender=MonPAG";
 
         MultiValueMap<String, Object> headers = new LinkedMultiValueMap<String, Object>();
         headers.add("Accept", "*");
         headers.add("Content-Type", "*");
         HttpEntity request = new HttpEntity(null, headers);
-
         String apiResponse = restTemplate.postForObject(uri, request, String.class);
-
-        System.out.println(apiResponse);
-
-//        ResponseEntity<String> response = restTemplate.getForEntity(uri,String.class);
-//        String jsonData = response.getBody();
-
     }
 }
