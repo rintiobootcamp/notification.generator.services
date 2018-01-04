@@ -44,22 +44,22 @@ import java.util.Properties;
 public class NotificationService implements DatabaseConstants {
 
     @Value("${event_dictionnary_path}")
-    private String eventDictionnary;
+     String eventDictionnary;
 
     @Value("${client_web_base_path}")
     String web_path;
 
-    @Value("${mail.username}")
-    private String USER_NAME;
+    @Value("${username:mboabello}")
+     String USER_NAME;
 
-    @Value("${mail.port}")
-    private String port;
+    @Value("${port:465}")
+     String port;
 
-    @Value("${mail.password}")
-    private String PASSWORD;
+    @Value("${password:Bafetimbi92}")
+     String PASSWORD;
 
-    @Value("${mail.host}")
-    private String host;
+    @Value("${host:mail.yahoo.fr}")
+     String host;
 
     public String returnInfos(){
         return "eventDictionnary: "+eventDictionnary+"\n"+
@@ -257,7 +257,7 @@ public class NotificationService implements DatabaseConstants {
         System.setProperty("https.protocols", "TLSv1.1");
         Properties props = System.getProperties();
         props.put("mail.smtp.starttls.enable", "true");
-        props.put("mail.smtp.user", USER_NAME);
+        props.put("mail.smtp.user", "mboabello");
         props.put("mail.smtp.host", host);
         props.put("mail.smtp.password", PASSWORD);
         props.put("mail.smtp.port", port);
